@@ -1,26 +1,34 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Layout, theme, Button } from "antd";
+import { Layout } from "antd";
 
-import NavBar from "./Components/NavBar.jsx";
-import Sider from "antd/es/layout/Sider.js";
+import NavBar from "./Components/NavBar";
+import MainContent from "./Components/MainContent";
+import RequestListDrawer from "./Components/RequestListDrawer";
+import SuccessModal from "./Components/SuccessModal";
 
-const { Header, Content, Footer } = Layout;
+const { Sider } = Layout;
 
 function App() {
+    const [isDrawerVisible, setDrawerVisible] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const showDrawer = () => setDrawerVisible(true);
+    const hideDrawer = () => setDrawerVisible(false);
+    const showModal = () => setModalVisible(true);
+    const hideModal = () => setModalVisible(false);
+
     return (
         <Router>
-            <Layout style={{ minHeight: "100vh" }}>
-                <Sider>
-                    <NavBar />  
+            <Layout className="app-layout">
+                <Sider className="sidebar">
+                    <NavBar onOpenDrawer={showDrawer} onShowModal={showModal} />
                 </Sider>
 
-                <Routes>
-                    <Route path="/" element={<div>Home</div>} />
-                    <Route path="/about" element={<div>About</div>} />
-                    <Route path="/contact" element={<div>Contact</div>} />
-                    <Route path="/products" element={<div>Products</div>} />
-                </Routes>
+                <MainContent onShowModal={showModal} />
+
+                <RequestListDrawer visible={isDrawerVisible} onClose={hideDrawer} />
+                <SuccessModal visible={isModalVisible} onClose={hideModal} />
             </Layout>
         </Router>
     );
