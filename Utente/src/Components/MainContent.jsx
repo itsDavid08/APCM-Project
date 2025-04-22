@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import SintoMe from "../Pages/SintoMe";
 import PrecisoAjuda from "../Pages/PrecisoAjuda";
 import QueroChamar from "../Pages/QueroChamar";
@@ -15,7 +15,7 @@ const MainContent = ({ onShowModal }) => {
                 <Route path="/preciso-ajuda" element={<PrecisoAjuda onSend={onShowModal} />} />
                 <Route path="/chamar" element={<QueroChamar onSend={onShowModal} />} />
                 <Route path="/management" element={<EscreverMensagem />} />
-                <Route path="*" element={<div>Escolha uma opção do menu</div>} />
+                <Route path="*" element={<Navigate to= "/sinto-me" replace />} />
             </Routes>
         </Content>
     );
