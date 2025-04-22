@@ -1,47 +1,151 @@
 /* --- General Layout --- */
 .app-layout {
   min-height: 100vh;
+  display: flex;
 }
-body{
+
+body {
   margin: 0;
   padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* --- Sidebar --- */
 .sidebar {
-  background-color: #00bcd4;
+  background-color: #04D9D9;
   color: white;
+  width: 250px !important;
+  max-width: 250px !important;
+  min-width: 250px !important;
+  flex: 0 0 250px !important;
 }
 
 /* --- Main Content --- */
 .main-content {
   padding: 20px;
   background-color: white;
+  flex-grow: 1;
 }
 
-/* --- NavBar --- */
-.navbar {
+/* NavBar Container */
+.navbar-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-  padding: 10px;
+  height: 100vh;
   background-color: #04D9D9;
+  padding: 20px 10px;
+  justify-content: space-between;
+  width: 100%;
 }
 
-/* Botón SOS */
-.sos-button {
-  width: 145px;
-  height: 154px;
-  padding : 0;
+/* Menu Section */
+.menu-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 
-/* Botón de Lista de Pedidos */
-.pedido-button {
-  margin-top: 10px;
-  background-color: #b6f3bd;
+.custom-menu {
+  background-color: transparent;
   border: none;
 }
+
+.custom-menu .ant-menu-item {
+  height: 75px;
+  line-height: 1.5;
+  padding: 15px 10px;
+  margin: 2rem 0;
+  border-radius: 8px;
+  transition: all 0.3s;
+  background-color: white;
+  color: black;
+}
+
+.custom-menu .ant-menu-item-selected {
+  background-color: white !important;
+}
+
+.custom-menu .ant-menu-item:hover {
+  background-color: #C5C5C5 !important;
+}
+
+.menu-link {
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Buttons Section */
+.buttons-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-bottom: 10px;
+}
+
+/* Custom SOS Button */
+.sos-button {
+  width: 100%;
+  height: 80px;
+  font-size: 24px;
+  font-weight: bold;
+  background-color: #ff4d4f;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.sos-button:hover {
+  background-color: #ff7875;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sos-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Pedido Button */
+.pedido-button {
+  width: 100%;
+  height: 50px;
+  background-color: #b6f3bd;
+  border: none;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pedido-button:hover {
+  background-color: #95e89d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pedido-button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Resto de tus estilos existentes... */
 .page-container {
   padding: 24px;
   display: flex;
@@ -73,7 +177,4 @@ body{
 textarea {
   padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
-  resize: vertical;
-}
+  border-radius:
