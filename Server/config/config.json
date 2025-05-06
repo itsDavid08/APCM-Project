@@ -1,0 +1,14 @@
+{
+    "development": {
+        "dialect": "sqlite",
+        "storage": "./database/apcm.sqlite"
+    },
+    "test": {
+        "dialect": "sqlite",
+        "storage": "./database/apcm.sqlite"
+    },
+    "production": {
+        "dialect": "sqlite",
+        "storage": "./database/apcm.sqlite"
+    }
+}
