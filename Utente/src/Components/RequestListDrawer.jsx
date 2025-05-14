@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+mport { useEffect, useState } from "react";
 import sintoMeIcons from "../assets/Sinto-me-Icons.js";
 import precisoAjudaIcons from "../assets/Preciso-Ajuda-icons.js";
 import queroChamarIcons from "../assets/Quero-chamar-icons.js";
