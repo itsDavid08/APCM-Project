@@ -8,33 +8,10 @@ import {
 } from "../assets/icons";
 
 const menuItems = [
-    {
-        key: "sinto",
-        link: "/sinto-me",
-        text: "Sinto-me...",
-        icon: iconoSintoMe,
-    },
-    {
-        key: "precisoAjuda",
-        link: "/preciso-ajuda",
-        text: "Preciso de ajuda com...",
-        icon: iconoPrecisoAjuda,
-    },
-    {
-        key: "queroChamar",
-        link: "/chamar",
-        text: "Quero chamar...",
-        icon: iconoQueroChamar,
-    },
-    {
-        key: "mensagem",
-        link: "/management",
-        text: "Escrever Mensagem",
-        icon: iconoMensagem,
-    },
+
 ];
 
-const NavBar = ({ onOpenDrawer, onShowModal }) => {
+const Config = ({ onOpenDrawer, onShowModal }) => {
     const location = useLocation();
 
     return (
@@ -82,4 +59,4 @@ const NavBar = ({ onOpenDrawer, onShowModal }) => {
     );
 };
 
-export default NavBar;
+export default Config;
