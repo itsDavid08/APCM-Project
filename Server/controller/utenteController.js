@@ -15,7 +15,15 @@ const utenteController = {
     // Obter um utente por ID
     getUtenteById: async (req, res) => {
         try {
-            const utente = await Utente.findByPk(req.params.id);
+            const utente = await Utente.findByPk(req.params.id,{
+                include:[{
+                    model: Pedido,
+                    as: "pedidos",
+                    where: { utenteId: req.params.id },
+                    where: { estado: "pendente" },
+                    required: false
+                }]
+            });
             if (!utente)
                 return res
                     .status(404)
