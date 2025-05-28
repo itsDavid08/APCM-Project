@@ -4,19 +4,11 @@ import { ContextProvider } from "./ContextProvider";
 import Config from "./Components/Config";
 import Home from "./Pages/Home";
 import MainContent from "./Pages/MainContent";
-import RequestListDrawer from "./Components/RequestListDrawer";
-import SuccessModal from "./Components/SuccessModal";
+
 import EditUtente from "./Components/EditUtente.jsx";
 import NewUtente from "./Components/NewUtente.jsx";
 
 function App() {
-    const [isDrawerVisible, setDrawerVisible] = useState(false);
-    const [isModalVisible, setModalVisible] = useState(false);
-
-    const showDrawer = () => setDrawerVisible(true);
-    const hideDrawer = () => setDrawerVisible(false);
-    const showModal = () => setModalVisible(true);
-    const hideModal = () => setModalVisible(false);
 
     return (
         <Router>
