@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import {useContext, useState, useEffect} from "react";
 import { Context } from "../ContextProvider";
 import { useNavigate } from "react-router-dom";
 import RequestListDrawer from "../Components/RequestListDrawer.jsx";
@@ -7,6 +7,9 @@ import SuccessModal from "../Components/SuccessModal.jsx";
 
 const MainContent = () => {
     const { utente } = useContext(Context);
+    const { botoes } = useContext(Context);
+    const { pedidosUtilizador } = useContext(Context);
+    const {postPedido} = useContext(Context);
 
     const [isDrawerVisible, setDrawerVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -15,6 +18,18 @@ const MainContent = () => {
     const hideDrawer = () => setDrawerVisible(false);
     const showModal = () => setModalVisible(true);
     const hideModal = () => setModalVisible(false);
+
+    const SOS_BUTTON = {
+        id: 1,
+        nome: "SOS",
+        imagem: ""
+    };
+
+    useEffect(() => {
+        console.log("Utente:", utente);
+        console.log("Botoes:", botoes);
+        console.log("Pedidos do Utilizador:", pedidosUtilizador);
+    })
 
     const navigate = useNavigate();
 
@@ -102,7 +117,7 @@ const MainContent = () => {
         }
     ];
 
-    const handleButtonClick = (buttonText) => {
+    const handleButtonClick = (button) => {
         // Mostrar el modal
         showModal();
 
@@ -111,16 +126,25 @@ const MainContent = () => {
             hideModal();
         }, 1000);
 
-        console.log(`Botón "${buttonText}" presionado`);
-        // Aquí puedes añadir cualquier otra lógica que necesites
+        console.log(`Botón "${button.nome}" presionado`);
+
+        var novoPedido = {
+            emergencia: button.nome ==="SOS",
+            utenteId: utente.id,
+            botaoId: button.id
+        };
+        console.log("Novo pedido:");
+        console.log(novoPedido);
+        postPedido(novoPedido);
+
     };
 
     return (
         <>
         <div className="aac-container">
-            <div className="aac-header">
+            <div className="first-line-section">
                 <button
-                    className="menu-button"
+                    className="menu-button option-button"
                     onClick={showDrawer}
                 >
                     <span className="hamburger-icon">☰</span>
@@ -129,7 +153,7 @@ const MainContent = () => {
 
                 {/* Línea 1 - Sinto-me */}
                 <div
-                    className="aac-section first-line"
+                    className="aac-section first-line fill-line"
                     style={{
                         borderColor: sections[0].borderColor,
                         backgroundColor: sections[0].backgroundColor
@@ -152,7 +176,7 @@ const MainContent = () => {
                 </div>
 
                 <button
-                    className="settings-button"
+                    className="settings-button option-button"
                     onClick={() => navigate('/')}
                     aria-label="Menú principal"
                 >
@@ -165,7 +189,7 @@ const MainContent = () => {
 
 
                 {/* Línea 2 - Tres secciones */}
-                <div className="second-line-sections">
+                <div className="second-line-section">
                     {/* Medicamentos */}
                     <div
                         className="aac-section"
@@ -239,10 +263,10 @@ const MainContent = () => {
                     </div>
                 </div>
 
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+            <div className="last-line-section" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <button
                 className="sos-button"
-                onClick={() => handleButtonClick("SOS Izquierdo")}
+                onClick={() => handleButtonClick(SOS_BUTTON)}
                 aria-label="Botón de emergencia"
             >
                 SOS
@@ -250,7 +274,7 @@ const MainContent = () => {
 
                 {/* Línea 3 - Quero chamar... */}
                 <div
-                    className="aac-section last-line"
+                    className="aac-section last-line fill-line"
                     style={{
                         borderColor: sections[4].borderColor,
                         backgroundColor: sections[4].backgroundColor
@@ -276,13 +300,29 @@ const MainContent = () => {
                 </div>
             <button
                 className="sos-button"
-                onClick={() => handleButtonClick("SOS Derecho")}
+                onClick={() => handleButtonClick(SOS_BUTTON)}
                 aria-label="Botón de emergencia"
             >
                 SOS
             </button>
             </div>
         </div>
+
+            <div>
+                {botoes.map((button) => (
+                    <button
+                        key={button.id}
+                        className="aac-button"
+                        onClick={() => handleButtonClick(button)}
+                        aria-label={button.nome}
+                    >
+                        <img src={button.imagem} alt={button.nome} />
+                        <span>{button.nome}</span>
+                    </button>
+                ))}
+
+            </div>
+
             <SuccessModal visible={isModalVisible} onClose={hideModal} />
             <RequestListDrawer visible={isDrawerVisible} onClose={hideDrawer} />
     </>

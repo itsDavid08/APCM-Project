@@ -2,7 +2,7 @@
 import { createContext, useState, useEffect } from "react";
 
 export const Context = createContext(); // Exportación nombrada
-const apiUrl = "http://localhost:3000/";
+const apiUrl = `${window.location.protocol}//${window.location.hostname}:3000/`;
 
 export const ContextProvider = ({ children }) => {
     const [utente, setUtente] = useState(null);
@@ -10,36 +10,72 @@ export const ContextProvider = ({ children }) => {
     const [botoes, setBotoes] = useState([]);
     const [pedidosUtilizador, setPedidosUtilizador] = useState([]);
 
-    useEffect(() => {
-        const fetchUtentes = async () => {
-            try {
-                const response = await fetch(apiUrl + "utentes");
-                const data = await response.json();
-                setUtentes(data);
-            } catch (error) {
-                console.error("Error fetching utentes:", error);
+
+    const fetchUtentes = async () => {
+        try {
+            const response = await fetch(apiUrl + "utentes");
+            const data = await response.json();
+            setUtentes(data);
+        } catch (error) {
+            console.error("Error fetching utentes:", error);
+        }
+    };
+
+
+    const fetchBotoes = async () => {
+
+        try {
+            const response = await fetch(apiUrl + "botoes");
+            const data = await response.json();
+            setBotoes(data);
+        } catch (error) {
+            console.error("Error fetching botoes:", error);
+        }
+
+    };
+
+    const fetchPedidosUtilizador = async (utenteId) => {
+        try {
+            const response = await fetch(`${apiUrl}pedidos/utente/${utenteId}`);
+            const data = await response.json();
+            setPedidosUtilizador(data);
+        } catch (error) {
+            console.error("Error fetching pedidos:", error);
+        }
+    }
+
+    const postPedido = async (pedido) => {
+        try {
+            const response = await fetch(apiUrl + "pedidos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(pedido),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to create pedido");
             }
-        };
+            const data = await response.json();
+            setPedidosUtilizador((prev) => [...prev, data]);
+        } catch (error) {
+            console.error("Error creating pedido:", error);
+        }
+    }
+
+    useEffect(() => {
 
         fetchUtentes();
-    }, []);
-
-    useEffect(() => {
-        const fetchBotoes = async () => {
-            if (utente) {
-                try {
-                    const response = await fetch(`${apiUrl}botoes?utenteId=${utente.id}`);
-                    const data = await response.json();
-                    setBotoes(data);
-                } catch (error) {
-                    console.error("Error fetching botoes:", error);
-                }
-            }
-        };
-
         fetchBotoes();
-    }, [utente]);
 
+    }, []);
+/*
+    useEffect(() => {
+
+
+
+    }, [utente]);
+*/
     return (
         <Context.Provider
             value={{
@@ -51,6 +87,7 @@ export const ContextProvider = ({ children }) => {
                 setBotoes,
                 pedidosUtilizador,
                 setPedidosUtilizador,
+                postPedido,
             }}
         >
             {children}
