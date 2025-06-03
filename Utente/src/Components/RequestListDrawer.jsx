@@ -5,9 +5,11 @@ import { Context } from "../ContextProvider";
 const RequestListDrawer = ({ visible, onClose }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { pedidosUtilizador } = useContext(Context);
+    const { botoes } = useContext(Context);
 
     useEffect(() => {
         setIsOpen(visible);
+        console.log("Pedidos do utilizador:", pedidosUtilizador);
     }, [visible]);
 
     const handleClose = () => {
@@ -29,12 +31,12 @@ const RequestListDrawer = ({ visible, onClose }) => {
                         {pedidosUtilizador.map((item) => (
                             <div key={item.id} className="request-item">
                                 <img
-                                    src={item.icon || "imagesBotoes/default.png"}
-                                    alt="Ícone do pedido"
+                                    src={item.botao.imagem || "imagesBotoes/default.png"}
+                                    alt={item.botao.nome}
                                     className="request-icon"
                                 />
                                 <span className="request-text">
-                                    {item.texto}
+                                    {item.botao.mensagem}
                                 </span>
                                 <div className="request-actions">
                                     <button className="action-button done">

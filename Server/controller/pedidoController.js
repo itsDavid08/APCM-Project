@@ -1,4 +1,4 @@
-const { Pedido } = require('../models');
+const { Pedido, Botao, Utente } = require('../models');
 
 const pedidoController = {
     // Buscar pedidos ativos ordenados por hora de criação (mais recentes primeiro)
@@ -6,7 +6,12 @@ const pedidoController = {
         try {
             const pedidos = await Pedido.findAll({
                 where: { estado: 'pendente' },
-                order: [['hora', 'DESC']]
+                order: [['hora', 'DESC']],
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
+                ]
+
             });
             res.json(pedidos);
         } catch (error) {
@@ -22,6 +27,10 @@ const pedidoController = {
                 order: [
                     ['emergencia', 'DESC'],
                     ['hora', 'DESC']
+                ],
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
                 ]
             });
             res.json(pedidos);
@@ -33,7 +42,12 @@ const pedidoController = {
     // Obter todos os pedidos
     getTodosPedidos: async (req, res) => {
         try {
-            const pedidos = await Pedido.findAll();
+            const pedidos = await Pedido.findAll({
+                include: [
+                { model: Botao, as: 'botao' },
+                { model: Utente, as: 'utente' }
+            ]
+            });
             res.json(pedidos);
         } catch (error) {
             res.status(500).json({ erro: 'Erro ao obter os pedidos' });
@@ -55,7 +69,11 @@ const pedidoController = {
     getPedidosPorUtenteId: async (req, res) => {
         try {
             const pedidos = await Pedido.findAll({
-                where: { utenteId: req.params.utenteId }
+                where: { utenteId: req.params.utenteId },
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
+                ]
             });
             res.json(pedidos);
         } catch (error) {
@@ -66,7 +84,13 @@ const pedidoController = {
     // Criar um novo pedido
     criarPedido: async (req, res) => {
         try {
-            const pedido = await Pedido.create(req.body);
+            const pedidoCriado = await Pedido.create(req.body);
+            const pedido = await Pedido.findByPk(pedidoCriado.id, {
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
+                ]
+            });
             res.status(201).json(pedido);
         } catch (error) {
             res.status(400).json({ erro: 'Erro ao criar o pedido' });

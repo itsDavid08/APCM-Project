@@ -69,13 +69,15 @@ export const ContextProvider = ({ children }) => {
         fetchBotoes();
 
     }, []);
-/*
+
     useEffect(() => {
 
-
+        if (utente) {
+            fetchPedidosUtilizador(utente.id);
+        }
 
     }, [utente]);
-*/
+
     return (
         <Context.Provider
             value={{
