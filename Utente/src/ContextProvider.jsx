@@ -46,7 +46,7 @@ export const ContextProvider = ({ children }) => {
 
     const postPedido = async (pedido) => {
         try {
-            const response = await fetch(apiUrl + "pedidos", {
+            const response = await fetch(apiUrl + "pedidos/ativos/hora", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,13 +69,15 @@ export const ContextProvider = ({ children }) => {
         fetchBotoes();
 
     }, []);
-/*
+
     useEffect(() => {
 
-
+        if (utente) {
+            fetchPedidosUtilizador(utente.id);
+        }
 
     }, [utente]);
-*/
+
     return (
         <Context.Provider
             value={{

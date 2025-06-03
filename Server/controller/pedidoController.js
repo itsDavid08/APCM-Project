@@ -6,7 +6,12 @@ const pedidoController = {
         try {
             const pedidos = await Pedido.findAll({
                 where: { estado: 'pendente' },
-                order: [['hora', 'DESC']]
+                order: [['hora', 'DESC']],
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
+                ]
+
             });
             res.json(pedidos);
         } catch (error) {
@@ -22,6 +27,10 @@ const pedidoController = {
                 order: [
                     ['emergencia', 'DESC'],
                     ['hora', 'DESC']
+                ],
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
                 ]
             });
             res.json(pedidos);
@@ -33,7 +42,12 @@ const pedidoController = {
     // Obter todos os pedidos
     getTodosPedidos: async (req, res) => {
         try {
-            const pedidos = await Pedido.findAll();
+            const pedidos = await Pedido.findAll({
+                include: [
+                { model: Botao, as: 'botao' },
+                { model: Utente, as: 'utente' }
+            ]
+            });
             res.json(pedidos);
         } catch (error) {
             res.status(500).json({ erro: 'Erro ao obter os pedidos' });
@@ -55,7 +69,11 @@ const pedidoController = {
     getPedidosPorUtenteId: async (req, res) => {
         try {
             const pedidos = await Pedido.findAll({
-                where: { utenteId: req.params.utenteId }
+                where: { utenteId: req.params.utenteId },
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
+                ]
             });
             res.json(pedidos);
         } catch (error) {

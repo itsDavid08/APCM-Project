@@ -5,9 +5,11 @@ import { Context } from "../ContextProvider";
 const RequestListDrawer = ({ visible, onClose }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { pedidosUtilizador } = useContext(Context);
+    const { botoes } = useContext(Context);
 
     useEffect(() => {
         setIsOpen(visible);
+        console.log("Pedidos do utilizador:", pedidosUtilizador);
     }, [visible]);
 
     const handleClose = () => {

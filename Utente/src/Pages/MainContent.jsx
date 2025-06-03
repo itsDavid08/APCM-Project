@@ -8,7 +8,6 @@ import SuccessModal from "../Components/SuccessModal.jsx";
 const MainContent = () => {
     const { utente } = useContext(Context);
     const { botoes } = useContext(Context);
-    const { pedidosUtilizador } = useContext(Context);
     const {postPedido} = useContext(Context);
 
     const [isDrawerVisible, setDrawerVisible] = useState(false);
@@ -28,7 +27,6 @@ const MainContent = () => {
     useEffect(() => {
         console.log("Utente:", utente);
         console.log("Botoes:", botoes);
-        console.log("Pedidos do Utilizador:", pedidosUtilizador);
     })
 
     const navigate = useNavigate();
