@@ -46,7 +46,7 @@ export const ContextProvider = ({ children }) => {
 
     const postPedido = async (pedido) => {
         try {
-            const response = await fetch(apiUrl + "pedidos/ativos/hora", {
+            const response = await fetch(apiUrl + "pedidos", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

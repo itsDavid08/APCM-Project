@@ -1,4 +1,4 @@
-const { Pedido } = require('../models');
+const { Pedido, Botao, Utente } = require('../models');
 
 const pedidoController = {
     // Buscar pedidos ativos ordenados por hora de criação (mais recentes primeiro)
@@ -84,7 +84,13 @@ const pedidoController = {
     // Criar um novo pedido
     criarPedido: async (req, res) => {
         try {
-            const pedido = await Pedido.create(req.body);
+            const pedidoCriado = await Pedido.create(req.body);
+            const pedido = await Pedido.findByPk(pedidoCriado.id, {
+                include: [
+                    { model: Botao, as: 'botao' },
+                    { model: Utente, as: 'utente' }
+                ]
+            });
             res.status(201).json(pedido);
         } catch (error) {
             res.status(400).json({ erro: 'Erro ao criar o pedido' });
