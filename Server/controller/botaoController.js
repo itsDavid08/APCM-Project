@@ -28,6 +28,7 @@ const botaoController = {
     // Criar um novo botão
     createBotao: async (req, res) => {
         try {
+
             const botao = await Botao.create(req.body);
             res.status(201).json(botao);
         } catch (error) {

@@ -58,6 +58,17 @@
             color: #888;
             margin-top: 5px;
         }
+        .img-opcao {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .img-opcao.selecionada {
+            border: 2px solid #04D9D9;
+        }
     </style>
 </head>
 <body>
@@ -92,11 +103,13 @@
     <!-- Mantenemos el pre para debug (oculto) -->
     <pre id="botoes" style="display: none;"></pre>
 
-    <form id="formCriarBotao" enctype="multipart/form-data" onsubmit="criarBotao(event)">
+    <form id="formCriarBotao" onsubmit="criarBotao(event)">
         <label>Nome: <input id="botaoNome" name="nome" required></label>
         <label>Mensagem: <input id="botaoMensagem" name="mensagem" required></label>
         <label>Categoria: <input id="botaoCategoria" name="categoria" required></label>
-        <label>Imagem: <input id="botaoImagem" name="imagem" type="file" accept="image/*" required></label>
+        <label>Imagem:</label>
+        <div id="galeria-imagens"></div>
+        <input type="hidden" id="botaoImagemSelecionada" name="imagem" required>
         <br>
         <img id="preview" src="#" alt="Pré-visualização" style="max-width: 200px; display: none;" />
         <button type="submit">Criar Botão</button>
@@ -238,15 +251,42 @@
                 });
             });
     }
+    function carregarGaleriaImagens() {
+        fetch('/imagesBotoes')
+            .then(r => r.json())
+            .then(imagens => {
+                const galeria = document.getElementById('galeria-imagens');
+                galeria.innerHTML = '';
+                imagens.forEach(img => {
+                    const el = document.createElement('img');
+                    el.src = img;
+                    el.alt = img;
+                    el.className = 'img-opcao';
+                    el.onclick = () => {
+                        document.querySelectorAll('.img-opcao').forEach(i => i.classList.remove('selecionada'));
+                        el.classList.add('selecionada');
+                        document.getElementById('botaoImagemSelecionada').value = img;
+                    };
+                    galeria.appendChild(el);
+                });
+            });
+    }
 
     function criarBotao(e) {
-        e.preventDefault();
 
-        const formData = new FormData(document.getElementById('formCriarBotao'));
+        e.preventDefault();
+        const form = e.target;
+        const data = {
+            nome: form.nome.value,
+            mensagem: form.mensagem.value,
+            categoria: form.categoria.value,
+            imagem: form.imagem.value
+        };
 
         fetch(api + '/botoes', {
             method: 'POST',
-            body: formData
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
         })
             .then(response => {
                 if (!response.ok) {
@@ -325,15 +365,8 @@
         fetch(api + '/pedidos/' + pedidoIdDelete.value, {method:'DELETE'}).then(listarPedidos);
     }
 
-    // Preview de la imagen seleccionada
-    document.getElementById('botaoImagem').addEventListener('change', function(event) {
-        const [file] = event.target.files;
-        if (file) {
-            const preview = document.getElementById('preview');
-            preview.src = URL.createObjectURL(file);
-            preview.style.display = 'block';
-        }
-    });
+
+    carregarGaleriaImagens();
 </script>
 </body>
 </html>

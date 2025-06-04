@@ -73,15 +73,7 @@ router.delete('/utentes/:utenteId/botoes/:botaoId', utenteController.desassociar
 // Rotas para Botões - Añadido manejo de errores para la subida de imágenes
 router.get('/botoes', botaoController.getAllBotoes);
 router.get('/botoes/utente/:utenteId', botaoController.getBotoesByUtenteId);
-router.post('/botoes', upload.single('imagem'), (req, res, next) => {
-    // Middleware para manejar errores de Multer
-    if (req.fileValidationError) {
-        return res.status(400).json({ error: req.fileValidationError });
-    } else if (!req.file) {
-        return res.status(400).json({ error: 'Por favor seleccione una imagen' });
-    }
-    next();
-}, botaoController.createBotao);
+router.post('/botoes', botaoController.createBotao);
 router.put('/botoes/:id', botaoController.updateBotao);
 router.delete('/botoes/:id', botaoController.deleteBotao);
 
