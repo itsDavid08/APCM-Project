@@ -41,11 +41,11 @@ const MainContent = () => {
             buttons: [
                 { id: 1, text: "Engasgado", image: "imagesBotoes/sinto/engasgado.png" },
                 { id: 2, text: "Estonteado", image: "imagesBotoes/sinto/estonteado.png" },
-                { id: 3, text: "Com falta de ar", image: "imagesBotoes/sinto/falta_ar.png" },
-                { id: 4, text: "Com dores", image: "imagesBotoes/sinto/dores.png" },
+                { id: 3, text: "Com falta de ar", image: "imagesBotoes/sinto/com_falta_de_ar.png" },
+                { id: 4, text: "Com dores", image: "imagesBotoes/sinto/com_dor.png" },
                 { id: 5, text: "Doente", image: "imagesBotoes/sinto/doente.png" },
                 { id: 6, text: "Com fome", image: "imagesBotoes/sinto/com_fome.png" },
-                { id: 7, text: "Com sede", image: "imagesBotoes/sinto/sede.png" },
+                { id: 7, text: "Com sede", image: "imagesBotoes/sinto/com_sede.png" },
                 { id: 8, text: "Zangado", image: "imagesBotoes/sinto/zangado.png" },
                 { id: 9, text: "Com frio", image: "imagesBotoes/sinto/com_frio.png" },
                 { id: 10, text: "Com calor", image: "imagesBotoes/sinto/com_calor.png" },
@@ -57,7 +57,7 @@ const MainContent = () => {
             backgroundColor: "#F3E5F5", // Lila más claro
             gridClass: "grid-2x2",
             buttons: [
-                { id: 11, text: "BiPAP", image: "imagesBotoes/medicamentos/bipap.png" },
+                { id: 11, text: "BiPAP", image: "imagesBotoes/medicamentos/BiPAP.png" },
                 { id: 12, text: "Algália", image: "imagesBotoes/medicamentos/algalia.png" },
                 { id: 13, text: "Medicamentos", image: "imagesBotoes/medicamentos/medicacao.png" },
                 { id: 14, text: "Pensos", image: "imagesBotoes/medicamentos/penso.png" },
@@ -73,10 +73,10 @@ const MainContent = () => {
                 { id: 16, text: "Água", image: "imagesBotoes/necesidades/agua.png" },
                 { id: 17, text: "Roupa", image: "imagesBotoes/necesidades/roupa.png" },
                 { id: 18, text: "Fazer Cocó", image: "imagesBotoes/necesidades/coco.png" },
-                { id: 19, text: "Fechar/Abrir a porta", image: "imagesBotoes/necesidades/porta.png" },
-                { id: 20, text: "Mudar de posição", image: "imagesBotoes/necesidades/posicao.png" },
+                { id: 19, text: "Fechar/Abrir a porta", image: "imagesBotoes/necesidades/abrir_fechar_a_porta.png" },
+                { id: 20, text: "Mudar de posição", image: "imagesBotoes/necesidades/mudar_de_posicao.png" },
                 { id: 21, text: "Cobrir-me", image: "imagesBotoes/necesidades/cobrir-me.png" },
-                { id: 22, text: "Fazer Xixi", image: "imagesBotoes/necesidades/xixi.png" },
+                { id: 22, text: "Fazer Xixi", image: "imagesBotoes/necesidades/urina.png" },
             ]
         },
         {
@@ -85,17 +85,17 @@ const MainContent = () => {
             backgroundColor: "#E1F5FE", // Azul más claro
             gridClass: "grid-6x2",
             buttons: [
-                { id: 23, text: "Cadeira de Rodas", image: "imagesBotoes/tecnologia/cadeira.png" },
-                { id: 24, text: "Quha Zono", image: "imagesBotoes/tecnologia/quha.png" },
-                { id: 25, text: "Chamada", image: "imagesBotoes/tecnologia/chamada.png" },
-                { id: 26, text: "PC", image: "imagesBotoes/tecnologia/pc.png" },
-                { id: 27, text: "Carregar PC", image: "imagesBotoes/tecnologia/carregar_pc.png" },
-                { id: 28, text: "Ligar a Luz", image: "imagesBotoes/tecnologia/luz.png" },
+                { id: 23, text: "Cadeira de Rodas", image: "imagesBotoes/tecnologia/cadeira_de_rodas.png" },
+                { id: 24, text: "Quha Zono", image: "imagesBotoes/tecnologia/quha_zono.jpg" },
+                { id: 25, text: "Chamada", image: "imagesBotoes/tecnologia/fazer_uma_chamada.png" },
+                { id: 26, text: "PC", image: "imagesBotoes/tecnologia/computador.png" },
+                { id: 27, text: "Carregar PC", image: "imagesBotoes/tecnologia/carregar_o_computador.png" },
+                { id: 28, text: "Ligar a Luz", image: "imagesBotoes/tecnologia/ligar_desligar_a_luz_do_quarto.png" },
                 { id: 29, text: "Óculos", image: "imagesBotoes/tecnologia/oculos.png" },
                 { id: 30, text: "Switch", image: "imagesBotoes/tecnologia/switch.png" },
                 { id: 31, text: "TV", image: "imagesBotoes/tecnologia/TV.png" },
                 { id: 32, text: "Telemóvel", image: "imagesBotoes/tecnologia/telemovel.png" },
-                { id: 33, text: "Carregar Telemóvel", image: "imagesBotoes/tecnologia/carregar_telemovel.png" },
+                { id: 33, text: "Carregar Telemóvel", image: "imagesBotoes/tecnologia/carregar_o_telemovel.png" },
                 { id: 34, text: "Auriculares", image: "imagesBotoes/tecnologia/fones.png" },
             ]
         },
@@ -109,8 +109,8 @@ const MainContent = () => {
                 { id: 36, text: "Enfermeiro", image: "imagesBotoes/chamar/Enfermeiro.png" },
                 { id: 37, text: "Fisioterapeuta", image: "imagesBotoes/chamar/Fisioterapeuta.png" },
                 { id: 38, text: "Psicólogo", image: "imagesBotoes/chamar/Psicologa.png" },
-                { id: 39, text: "Técnico da Educação", image: "imagesBotoes/chamar/Tecnico.png" },
-                { id: 40, text: "Terapeuta da fala", image: "imagesBotoes/chamar/Terapeuta.png" },
+                { id: 39, text: "Técnico da Educação", image: "imagesBotoes/chamar/Tecnica_de_Educacao.png" },
+                { id: 40, text: "Terapeuta da fala", image: "imagesBotoes/chamar/Terapeuta_da_Fala.png" },
             ]
         }
     ];
