@@ -106,7 +106,10 @@
     <form id="formCriarBotao" onsubmit="criarBotao(event)">
         <label>Nome: <input id="botaoNome" name="nome" required></label>
         <label>Mensagem: <input id="botaoMensagem" name="mensagem" required></label>
-        <label>Categoria: <input id="botaoCategoria" name="categoria" required></label>
+        <label>Categoria:
+            <input id="botaoCategoria" name="categoria" list="categorias-lista" required>
+            <datalist id="categorias-lista"></datalist>
+        </label>
         <label>Imagem:</label>
         <div id="galeria-imagens"></div>
         <input type="hidden" id="botaoImagemSelecionada" name="imagem" required>
@@ -271,6 +274,20 @@
                 });
             });
     }
+    function carregarCategorias() {
+        fetch('/botoes')
+            .then(r => r.json())
+            .then(botoes => {
+                const categorias = [...new Set(botoes.map(b => b.categoria).filter(Boolean))];
+                const datalist = document.getElementById('categorias-lista');
+                datalist.innerHTML = '';
+                categorias.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    datalist.appendChild(option);
+                });
+            });
+    }
 
     function criarBotao(e) {
 
@@ -307,6 +324,7 @@
 
     function atualizarBotao(e) {
         e.preventDefault();
+
         fetch(api + '/botoes/' + botaoIdUpdate.value, {
             method: 'PUT',
             headers: {'Content-Type':'application/json'},
@@ -315,7 +333,8 @@
     }
     function eliminarBotao(e) {
         e.preventDefault();
-        fetch(api + '/botoes/' + botaoIdDelete.value, {method:'DELETE'}).then(listarBotoes);
+        console.log("botaoIdDelete: ", botaoIdDelete.value);
+        fetch(api + '/botoes/' +  botaoIdDelete.value, {method:'DELETE'}).then(listarBotoes);
     }
 
     // Funciones para asociar/desasociar botones
@@ -367,6 +386,7 @@
 
 
     carregarGaleriaImagens();
+    carregarCategorias();
 </script>
 </body>
 </html>
