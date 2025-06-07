@@ -5,16 +5,22 @@ import { Context } from "../ContextProvider";
 const RequestListDrawer = ({ visible, onClose }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { pedidosUtilizador } = useContext(Context);
-    const { botoes } = useContext(Context);
+    const { updatePedido } = useContext(Context);
 
     useEffect(() => {
         setIsOpen(visible);
-        console.log("Pedidos do utilizador:", pedidosUtilizador);
     }, [visible]);
 
     const handleClose = () => {
         setIsOpen(false);
         onClose();
+    };
+
+    const handleCancel = (pedido) => {
+        updatePedido(pedido, "cancelado");
+    };
+    const handleDone = (pedido) => {
+        updatePedido(pedido, "concluido");
     };
 
     return (
@@ -39,10 +45,10 @@ const RequestListDrawer = ({ visible, onClose }) => {
                                     {item.botao.mensagem}
                                 </span>
                                 <div className="request-actions">
-                                    <button className="action-button done">
+                                    <button className="action-button done" onClick={() => handleDone(item)}>
                                         ✔️
                                     </button>
-                                    <button className="action-button cancel">
+                                    <button className="action-button cancel" onClick={() => handleCancel(item)}>
                                         ❌
                                     </button>
                                 </div>

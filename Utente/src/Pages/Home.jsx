@@ -14,7 +14,7 @@ const Home = () => {
     const handleOpen = () => {
         if (selectedUtente) {
             setUtente(selectedUtente);
-            navigate("/main");
+            navigate("/main/" + selectedUtente.id);
         }
     };
 

@@ -82,7 +82,7 @@ router.get('/pedidos', pedidoController.getTodosPedidos);
 router.get('/pedidos/ativos/hora', pedidoController.getPedidosAtivosPorHora);
 router.get('/pedidos/ativos/emergencia', pedidoController.getPedidosAtivosPorEmergencia);
 router.get('/pedidos/:id', pedidoController.getPedidoPorId);
-router.get('/pedidos/utente/:utenteId', pedidoController.getPedidosPorUtenteId);
+router.get('/pedidos/utente/:utenteId', pedidoController.getPedidosAtivosPorUtenteId);
 router.post('/pedidos', pedidoController.criarPedido);
 router.put('/pedidos/:id', pedidoController.atualizarPedido);
 router.delete('/pedidos/:id', pedidoController.eliminarPedido);

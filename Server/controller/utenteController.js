@@ -1,4 +1,4 @@
-const { Utente } = require("../models");
+const { Utente, Pedido, Botao } = require("../models");
 
 // Corrigir a sintaxe dos métodos do objeto: usar propriedades, não atribuições
 const utenteController = {
@@ -15,21 +15,29 @@ const utenteController = {
     // Obter um utente por ID
     getUtenteById: async (req, res) => {
         try {
-            const utente = await Utente.findByPk(req.params.id,{
-                include:[{
+            const utenteId = parseInt(req.params.id, 10);
+            console.log(utenteId);
+            const utente = await Utente.findByPk(utenteId,{
+                include: [{
                     model: Pedido,
                     as: "pedidos",
-                    where: { utenteId: req.params.id },
-                    where: { estado: "pendente" },
-                    required: false
+                    where: { utenteId: utenteId, estado: "pendente" },
+                    required: false,
+                    include: [{
+                        model: Botao,
+                        as: "botao", // ajuste conforme o alias definido na associação
+                        required: false
+                    }]
                 }]
             });
             if (!utente)
                 return res
                     .status(404)
                     .json({ mensagem: "Utente não encontrado" });
+
             res.json(utente);
         } catch (erro) {
+            console.error("Erro ao obter utente:", erro);
             res.status(500).json({ mensagem: erro.message });
         }
     },
@@ -41,6 +49,7 @@ const utenteController = {
             const novoUtente = await Utente.create(req.body);
             res.status(201).json(novoUtente);
         } catch (erro) {
+            console.error("Erro ao criar utente:", erro);
             res.status(400).json({ mensagem: erro.message });
         }
     },
@@ -58,6 +67,7 @@ const utenteController = {
                 res.status(404).json({ mensagem: "Utente não encontrado" });
             }
         } catch (erro) {
+            console.error("Erro ao atualizar utente:", erro);
             res.status(400).json({ mensagem: erro.message });
         }
     },
@@ -74,6 +84,7 @@ const utenteController = {
                 res.status(404).json({ mensagem: "Utente não encontrado" });
             }
         } catch (erro) {
+            console.error("Erro ao eliminar utente:", erro);
             res.status(500).json({ mensagem: erro.message });
         }
     },
@@ -89,6 +100,7 @@ const utenteController = {
             await utente.addBotoes(botao);
             res.json({ mensagem: "Botão associado ao utente com sucesso" });
         } catch (erro) {
+            console.error("Erro ao associar botão:", erro);
             res.status(500).json({ mensagem: erro.message });
         }
     },
@@ -105,6 +117,7 @@ const utenteController = {
             await utente.removeBotoes(botao);
             res.json({ mensagem: "Botão desassociado do utente com sucesso" });
         } catch (erro) {
+            console.error("Erro ao desassociar botão:", erro);
             res.status(500).json({ mensagem: erro.message });
         }
     },

@@ -17,7 +17,7 @@ function App() {
                 <div className="main-content-area">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/main" element={<MainContent />} />
+                        <Route path="/main/:id" element={<MainContent />} />
                         <Route path="/edit-utente/:id" element={<EditUtente />} />
                         <Route path="/new-utente" element={<NewUtente />} />
                     </Routes>

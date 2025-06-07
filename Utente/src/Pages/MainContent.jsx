@@ -1,3 +1,4 @@
+import {useParams} from "react-router-dom";
 import {useContext, useState, useEffect} from "react";
 import { Context } from "../ContextProvider";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +7,11 @@ import SuccessModal from "../Components/SuccessModal.jsx";
 
 
 const MainContent = () => {
-    const { utente } = useContext(Context);
+    const { id } = useParams();
+    const { utente, setUtente } = useContext(Context);
     const { botoes } = useContext(Context);
     const {postPedido} = useContext(Context);
+    const { fetchUtente } = useContext(Context);
 
     const botoesSintoMe = botoes.filter(b => b.categoria === "Sinto-me");
     const botoesMedicamentos = botoes.filter(b => b.categoria === "Medicamentos");
@@ -28,7 +31,11 @@ const MainContent = () => {
     const SOS_BUTTON = botoes.find(b => b.nome === "SOS");
 
     useEffect(() => {
-    })
+        if (utente == null || utente.id !== id) {
+            fetchUtente(id);
+        }
+
+    },[id]);
 
     const navigate = useNavigate();
 
@@ -263,7 +270,7 @@ const MainContent = () => {
         </div>
 
             <SuccessModal visible={isModalVisible} onClose={hideModal} />
-            <RequestListDrawer visible={isDrawerVisible} onClose={hideDrawer} />
+            <RequestListDrawer visible={isDrawerVisible} onClose={hideDrawer} utente={utente}/>
     </>
 
     );

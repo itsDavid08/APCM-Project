@@ -8,6 +8,7 @@ const botaoController = {
             const botoes = await Botao.findAll();
             res.json(botoes);
         } catch (error) {
+            console.error("Erro ao obter botões:", error);
             res.status(500).json({ erro: 'Erro ao obter os botões' });
         }
     },

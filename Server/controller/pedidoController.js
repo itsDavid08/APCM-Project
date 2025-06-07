@@ -66,10 +66,10 @@ const pedidoController = {
     },
 
     // Obter pedidos por ID de utente
-    getPedidosPorUtenteId: async (req, res) => {
+    getPedidosAtivosPorUtenteId: async (req, res) => {
         try {
             const pedidos = await Pedido.findAll({
-                where: { utenteId: req.params.utenteId },
+                where: { utenteId: req.params.utenteId , estado: 'pendente' },
                 include: [
                     { model: Botao, as: 'botao' },
                     { model: Utente, as: 'utente' }
@@ -100,7 +100,7 @@ const pedidoController = {
     // Atualizar um pedido
     atualizarPedido: async (req, res) => {
         try {
-            const [updated] = await Pedido.update(req.body, {
+            const updated = await Pedido.update(req.body, {
                 where: { id: req.params.id }
             });
             if (updated) {
@@ -110,6 +110,7 @@ const pedidoController = {
                 res.status(404).json({ erro: 'Pedido não encontrado' });
             }
         } catch (error) {
+            console.error("Erro ao atualizar pedido:", error);
             res.status(400).json({ erro: 'Erro ao atualizar o pedido' });
         }
     },

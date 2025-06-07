@@ -34,13 +34,28 @@ export const ContextProvider = ({ children }) => {
 
     };
 
-    const fetchPedidosUtilizador = async (utenteId) => {
+    const fetchPedidosUtilizador = async () => {
         try {
-            const response = await fetch(`${apiUrl}pedidos/utente/${utenteId}`);
+            const response = await fetch(`${apiUrl}pedidos/utente/${utente.id}`);
             const data = await response.json();
             setPedidosUtilizador(data);
         } catch (error) {
             console.error("Error fetching pedidos:", error);
+        }
+    }
+
+    const fetchUtente = async (id) => {
+        try {
+            console.log("entrou no fetchUtente com id:", id);
+            const response = await fetch(`${apiUrl}utentes/${id}`);
+            if (!response.ok) {
+
+                throw new Error("Utente not found");
+            }
+            const data = await response.json();
+            setUtente(data);
+        } catch (error) {
+            console.error("Error fetching utente:", error);
         }
     }
 
@@ -63,6 +78,23 @@ export const ContextProvider = ({ children }) => {
         }
     }
 
+    const updatePedido = async (pedido, novoEstado) => {
+        try {
+            console.log(`${apiUrl}pedidos/${pedido.id}`);
+            const response = await fetch(`${apiUrl}pedidos/${pedido.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ...pedido, estado: novoEstado }),
+            });
+            if (!response.ok) throw new Error("Erro ao atualizar pedido");
+
+            fetchPedidosUtilizador();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
     useEffect(() => {
 
         fetchUtentes();
@@ -71,12 +103,11 @@ export const ContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-
         if (utente) {
-            fetchPedidosUtilizador(utente.id);
+            fetchPedidosUtilizador();
         }
-
     }, [utente]);
+
 
     return (
         <Context.Provider
@@ -90,6 +121,9 @@ export const ContextProvider = ({ children }) => {
                 pedidosUtilizador,
                 setPedidosUtilizador,
                 postPedido,
+                fetchUtente,
+                fetchPedidosUtilizador,
+                updatePedido
             }}
         >
             {children}
