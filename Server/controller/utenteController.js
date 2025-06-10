@@ -16,7 +16,6 @@ const utenteController = {
     getUtenteById: async (req, res) => {
         try {
             const utenteId = parseInt(req.params.id, 10);
-            console.log(utenteId);
             const utente = await Utente.findByPk(utenteId,{
                 include: [{
                     model: Pedido,

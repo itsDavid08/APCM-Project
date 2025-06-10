@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../ContextProvider";
 
-const Home = () => {
+const UtenteHome = () => {
     const { utentes, setUtente, deleteUtente } = useContext(Context);
     const navigate = useNavigate();
     const [selectedUtente, setSelectedUtente] = useState(null);
@@ -27,14 +27,14 @@ const Home = () => {
 
     const handleDelete = async () => {
         if (selectedUtente) {
-            if (window.confirm(`¿Estás seguro de eliminar a ${selectedUtente.nome}? Esta acción no se puede deshacer.`)) {
+            if (window.confirm(`Tens certeza de eliminar a ${selectedUtente.nome}?`)) {
                 const success = await deleteUtente(selectedUtente.id);
                 if (success) {
                     setSelectedUtente(null);
                     // Mostrar mensaje de éxito
-                    alert(`${selectedUtente.nome} ha sido eliminado correctamente`);
+                    alert(`${selectedUtente.nome} foi eliminado corretamente`);
                 } else {
-                    alert(`Error al eliminar a ${selectedUtente.nome}`);
+                    alert(`Erro ao eliminar a ${selectedUtente.nome}`);
                 }
             }
         }
@@ -44,8 +44,16 @@ const Home = () => {
         navigate("/new-utente");
     };
 
+    const handlePendingRequests = () => {
+        navigate("/staff/pedidos");
+    }
+
+    const handleVoltar = () => {
+        navigate("/");
+    }
+
     return (
-        <div className="home-container">
+        <div className="home-container staff">
             <h1>Selecione o Utente</h1>
             <div className="utentes-grid">
                 {utentes.map((utente) => (
@@ -65,13 +73,6 @@ const Home = () => {
             <div className="action-sidebar">
                 <button
                     className={`sidebar-button ${!selectedUtente ? 'disabled' : ''}`}
-                    onClick={handleOpen}
-                    disabled={!selectedUtente}
-                >
-                    Abrir
-                </button>
-                <button
-                    className={`sidebar-button ${!selectedUtente ? 'disabled' : ''}`}
                     onClick={handleEdit}
                     disabled={!selectedUtente}
                 >
@@ -87,9 +88,24 @@ const Home = () => {
                 <button className="sidebar-button" onClick={handleNew}>
                     Novo
                 </button>
+                <button
+                    className="sidebar-button"
+                    onClick={handlePendingRequests}
+                    style={{marginTop: "auto"}}
+                >
+                    Pedidos Pendentes
+                </button>
+
+                <button
+                    className= "sidebar-button"
+                    onClick={handleVoltar}
+                    style={{marginBottom: "30px"}}
+                >
+                    Voltar Atrás
+                </button>
             </div>
         </div>
     );
 };
 
-export default Home;
+export default UtenteHome;

@@ -26,7 +26,7 @@ const pedidoController = {
                 where: { estado: 'pendente' },
                 order: [
                     ['emergencia', 'DESC'],
-                    ['hora', 'DESC']
+                    ['hora', 'ASC']
                 ],
                 include: [
                     { model: Botao, as: 'botao' },

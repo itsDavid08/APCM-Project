@@ -138,7 +138,7 @@ const MainContent = () => {
 
                 <button
                     className="settings-button option-button"
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/utente')}
                     aria-label="Menú principal"
                 >
                     <span>🛠</span>

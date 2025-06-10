@@ -9,6 +9,7 @@ export const ContextProvider = ({ children }) => {
     const [utentes, setUtentes] = useState([]);
     const [botoes, setBotoes] = useState([]);
     const [pedidosUtilizador, setPedidosUtilizador] = useState([]);
+    const [pedidosPendentes, setPedidosPendentes] = useState([]);
 
 
     const fetchUtentes = async () => {
@@ -58,6 +59,23 @@ export const ContextProvider = ({ children }) => {
             console.error("Error fetching utente:", error);
         }
     }
+    /**
+     * Fetches pending requests for all patiens, thos requests are ordered by urgency.
+     *
+     * @returns {Promise<void>}
+     */
+    const fetchPedidosPendentesByEmergencia = async () => {
+        try {
+            const response = await fetch(apiUrl + "pedidos/ativos/emergencia");
+            if (!response.ok) {
+                throw new Error("Failed to fetch pending requests");
+            }
+            const data = await response.json();
+            setPedidosPendentes(data);
+        } catch (error) {
+            console.error("Error fetching pending requests:", error);
+        }
+    }
 
     const postPedido = async (pedido) => {
         try {
@@ -95,10 +113,13 @@ export const ContextProvider = ({ children }) => {
     };
 
 
+
+
     useEffect(() => {
 
         fetchUtentes();
         fetchBotoes();
+        fetchPedidosPendentesByEmergencia();
 
     }, []);
 
@@ -120,10 +141,13 @@ export const ContextProvider = ({ children }) => {
                 setBotoes,
                 pedidosUtilizador,
                 setPedidosUtilizador,
+                pedidosPendentes,
+                setPedidosPendentes,
                 postPedido,
                 fetchUtente,
                 fetchPedidosUtilizador,
-                updatePedido
+                updatePedido,
+                fetchPedidosPendentesByEmergencia,
             }}
         >
             {children}

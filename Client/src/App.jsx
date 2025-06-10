@@ -2,11 +2,14 @@ import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ContextProvider } from "./ContextProvider";
 import Config from "./Components/Config";
-import Home from "./Pages/Home";
+import UtenteHome from "./Pages/UtenteHome.jsx";
 import MainContent from "./Pages/MainContent";
+import StaffHome from "./Pages/StaffHome.jsx";
+import PedidosPendentes from "./Pages/PedidosPendentes.jsx";
 
 import EditUtente from "./Components/EditUtente.jsx";
 import NewUtente from "./Components/NewUtente.jsx";
+import Home from "./Pages/Home.jsx";
 
 function App() {
 
@@ -17,9 +20,12 @@ function App() {
                 <div className="main-content-area">
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/utente" element={<UtenteHome />} />
                         <Route path="/main/:id" element={<MainContent />} />
                         <Route path="/edit-utente/:id" element={<EditUtente />} />
                         <Route path="/new-utente" element={<NewUtente />} />
+                        <Route path="/staff" element={<StaffHome />} />
+                        <Route path="/staff/pedidos" element={<PedidosPendentes />} />
                     </Routes>
                 </div>
 
