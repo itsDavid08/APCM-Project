@@ -718,3 +718,46 @@ body {
     font-size: 20px;
   }
 }
+
+/* Estilos para formularios de edición/creación */
+.edit-container, .new-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.edit-container h1, .new-container h1 {
+  color: #333;
+  text-align: center;
+}
+
+.edit-container form, .new-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-container label, .new-container label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.edit-container input, .new-container input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.edit-container button, .new-container button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}

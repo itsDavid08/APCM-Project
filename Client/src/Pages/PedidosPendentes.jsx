@@ -74,7 +74,7 @@ function PedidosPendentes() {
                                 <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
                                     <h2 style={{ margin: 0, fontSize: '40px', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
                                     <p style={{fontSize: "24px"}}>
-                                        <strong>{pedido.utente?.nome}</strong> - {pedido.utente?.quarto} - {" "}
+                                        {pedido.utente?.nome} - <strong>{pedido.utente?.quarto}</strong> - {" "}
                                         {new Date(pedido.hora).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
                                         {" - "}
                                         {new Date(pedido.hora).toLocaleDateString([], {day: '2-digit', month: '2-digit', year: 'numeric'})}
@@ -97,8 +97,8 @@ function PedidosPendentes() {
                                 </div>
                                 <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
                                     <h2 style={{ margin: 0, fontSize: '28px', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
-                                    <p style={{fontSize: "18px"}}>
-                                        <strong>{pedido.utente?.nome}</strong> - {pedido.utente?.quarto} - {" "}
+                                    <p style={{fontSize: "22px"}}>
+                                        {pedido.utente?.nome}- <strong>{pedido.utente?.quarto}</strong> - {" "}
                                         {new Date(pedido.hora).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
                                         {" - "}
                                         {new Date(pedido.hora).toLocaleDateString([], {day: '2-digit', month: '2-digit', year: 'numeric'})}

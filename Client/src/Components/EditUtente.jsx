@@ -7,13 +7,16 @@ const EditUtente = () => {
     const navigate = useNavigate();
     const { utentes, setUtentes } = useContext(Context);
     const [utente, setUtente] = useState(null);
-    const [formData, setFormData] = useState({ nome: '' });
+    const [formData, setFormData] = useState({ nome: '', quarto: '' });
 
     useEffect(() => {
         const foundUtente = utentes.find(u => u.id === parseInt(id));
         if (foundUtente) {
             setUtente(foundUtente);
-            setFormData({ nome: foundUtente.nome });
+            setFormData({
+                nome: foundUtente.nome,
+                quarto: foundUtente.quarto || ''
+            });
         } else {
             navigate('/');
         }
@@ -33,7 +36,7 @@ const EditUtente = () => {
             if (response.ok) {
                 const updatedUtente = await response.json();
                 setUtentes(utentes.map(u => u.id === updatedUtente.id ? updatedUtente : u));
-                navigate('/');
+                navigate('/staff');
             }
         } catch (error) {
             console.error("Error updating utente:", error);
@@ -46,17 +49,30 @@ const EditUtente = () => {
         <div className="edit-container">
             <h1>Editar Utente</h1>
             <form onSubmit={handleSubmit}>
+                <input
+                    type="hidden"
+                    value={utente.id}
+                    readOnly
+                />
                 <label>
                     Nome:
                     <input
                         type="text"
                         value={formData.nome}
-                        onChange={(e) => setFormData({...formData, nome: e.target.value})}
+                        onChange={e => setFormData({ ...formData, nome: e.target.value })}
                         required
                     />
                 </label>
-                <button type="submit">Guardar</button>
-                <button type="button" onClick={() => navigate('/')}>Cancelar</button>
+                <label>
+                    Quarto:
+                    <input
+                        type="text"
+                        value={formData.quarto || ''}
+                        onChange={e => setFormData({ ...formData, quarto: e.target.value })}
+                    />
+                </label>
+                <button type="submit">Atualizar Utente</button>
+                <button type="button" onClick={() => navigate('/staff')}>Cancelar</button>
             </form>
         </div>
     );

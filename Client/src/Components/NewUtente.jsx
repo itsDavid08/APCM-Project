@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const NewUtente = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({ nome: '' });
+    const [formData, setFormData] = useState({ nome: '', quarto: '' });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +17,7 @@ const NewUtente = () => {
             });
 
             if (response.ok) {
-                navigate('/');
+                navigate('/staff');
             }
         } catch (error) {
             console.error("Error creating utente:", error);
@@ -33,12 +33,21 @@ const NewUtente = () => {
                     <input
                         type="text"
                         value={formData.nome}
-                        onChange={(e) => setFormData({...formData, nome: e.target.value})}
+                        onChange={e => setFormData({ ...formData, nome: e.target.value })}
                         required
                     />
                 </label>
-                <button type="submit">Crear</button>
-                <button type="button" onClick={() => navigate('/')}>Cancelar</button>
+                <label>
+                    Quarto:
+                    <input
+                        type="text"
+                        value={formData.quarto}
+                        onChange={e => setFormData({ ...formData, quarto: e.target.value })}
+                        required
+                    />
+                </label>
+                <button type="submit">Criar Utente</button>
+                <button type="button" onClick={() => navigate('/staff')}>Cancelar</button>
             </form>
         </div>
     );
