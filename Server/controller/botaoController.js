@@ -1,4 +1,5 @@
 const { Botao, Utente } = require('../models');
+const { notificarAlteracaoBD } = require("../Util/socketIO");
 
 // Definir os métodos como propriedades do objeto botaoController
 const botaoController = {
@@ -31,6 +32,7 @@ const botaoController = {
         try {
 
             const botao = await Botao.create(req.body);
+            notificarAlteracaoBD();
             res.status(201).json(botao);
         } catch (error) {
             res.status(500).json({ erro: 'Erro ao criar o botão' });
@@ -46,6 +48,7 @@ const botaoController = {
             });
             if (updated) {
                 const botaoAtualizado = await Botao.findByPk(botaoId);
+                notificarAlteracaoBD();
                 res.json(botaoAtualizado);
             } else {
                 res.status(404).json({ erro: 'Botão não encontrado' });
@@ -64,6 +67,7 @@ const botaoController = {
                 where: { id: botaoId }
             });
             if (deleted) {
+                notificarAlteracaoBD();
                 res.json({ mensagem: 'Botão eliminado com sucesso' });
             } else {
                 res.status(404).json({ erro: 'Botão não encontrado' });

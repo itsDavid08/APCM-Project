@@ -11,7 +11,7 @@ const MainContent = () => {
     const { utente, setUtente } = useContext(Context);
     const { botoes } = useContext(Context);
     const {postPedido} = useContext(Context);
-    const { fetchUtente } = useContext(Context);
+    const { utenteId, setUtenteId } = useContext(Context);
 
     const botoesSintoMe = botoes.filter(b => b.categoria === "Sinto-me");
     const botoesMedicamentos = botoes.filter(b => b.categoria === "Medicamentos");
@@ -32,7 +32,7 @@ const MainContent = () => {
 
     useEffect(() => {
         if (utente == null || utente.id !== id) {
-            fetchUtente(id);
+            setUtenteId(id);
         }
 
     },[id]);

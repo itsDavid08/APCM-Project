@@ -1,15 +1,19 @@
 // ContextProvider.jsx
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 
 export const Context = createContext(); // Exportación nombrada
 const apiUrl = `${window.location.protocol}//${window.location.hostname}:3000/`;
 
 export const ContextProvider = ({ children }) => {
+    const [utenteId, setUtenteId] = useState(null);
     const [utente, setUtente] = useState(null);
     const [utentes, setUtentes] = useState([]);
     const [botoes, setBotoes] = useState([]);
     const [pedidosUtilizador, setPedidosUtilizador] = useState([]);
     const [pedidosPendentes, setPedidosPendentes] = useState([]);
+
+    const utenteIdRef = useRef(utenteId);
 
 
     const fetchUtentes = async () => {
@@ -35,9 +39,9 @@ export const ContextProvider = ({ children }) => {
 
     };
 
-    const fetchPedidosUtilizador = async () => {
+    const fetchPedidosUtilizador = async (id) => {
         try {
-            const response = await fetch(`${apiUrl}pedidos/utente/${utente.id}`);
+            const response = await fetch(`${apiUrl}pedidos/utente/${id}`);
             const data = await response.json();
             setPedidosUtilizador(data);
         } catch (error) {
@@ -89,8 +93,6 @@ export const ContextProvider = ({ children }) => {
             if (!response.ok) {
                 throw new Error("Failed to create pedido");
             }
-            const data = await response.json();
-            setPedidosUtilizador((prev) => [...prev, data]);
         } catch (error) {
             console.error("Error creating pedido:", error);
         }
@@ -105,12 +107,23 @@ export const ContextProvider = ({ children }) => {
                 body: JSON.stringify({ ...pedido, estado: novoEstado }),
             });
             if (!response.ok) throw new Error("Erro ao atualizar pedido");
-
-            fetchPedidosUtilizador();
         } catch (error) {
             console.error(error);
         }
     };
+
+    const deleteUtente = async (id) => {
+        try {
+            const response = await fetch(`${apiUrl}utentes/${id}`, {
+                method: "DELETE",
+            });
+            if (!response.ok) {
+                throw new Error("Failed to delete utente");
+            }
+        } catch (error) {
+            console.error("Error deleting utente:", error);
+        }
+    }
 
 
 
@@ -124,15 +137,41 @@ export const ContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (utente) {
-            fetchPedidosUtilizador();
+        if (utenteId) {
+            utenteIdRef.current = utenteId;
+            fetchUtente(utenteId);
+            if (utente) {
+                fetchPedidosUtilizador(utenteId);
+            }
         }
-    }, [utente]);
+    }, [utenteId]);
 
+    // Integração com socket.io
+    useEffect(() => {
+        const socket = io(apiUrl);
+
+        socket.on('bd_alterado', () => {
+
+            fetchUtentes();
+            fetchBotoes();
+            fetchPedidosPendentesByEmergencia();
+
+            if (utenteIdRef.current) {
+                fetchUtente(utenteIdRef.current);
+                fetchPedidosUtilizador(utenteIdRef.current);
+            }
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
 
     return (
         <Context.Provider
             value={{
+                utenteId,
+                setUtenteId,
                 utente,
                 setUtente,
                 utentes,
@@ -143,6 +182,7 @@ export const ContextProvider = ({ children }) => {
                 setPedidosUtilizador,
                 pedidosPendentes,
                 setPedidosPendentes,
+                deleteUtente,
                 postPedido,
                 fetchUtente,
                 fetchPedidosUtilizador,

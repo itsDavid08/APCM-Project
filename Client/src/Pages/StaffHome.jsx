@@ -28,14 +28,8 @@ const UtenteHome = () => {
     const handleDelete = async () => {
         if (selectedUtente) {
             if (window.confirm(`Tens certeza de eliminar a ${selectedUtente.nome}?`)) {
-                const success = await deleteUtente(selectedUtente.id);
-                if (success) {
-                    setSelectedUtente(null);
-                    // Mostrar mensaje de éxito
-                    alert(`${selectedUtente.nome} foi eliminado corretamente`);
-                } else {
-                    alert(`Erro ao eliminar a ${selectedUtente.nome}`);
-                }
+                await deleteUtente(selectedUtente.id);
+                setSelectedUtente(null);
             }
         }
     };

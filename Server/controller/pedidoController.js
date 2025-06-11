@@ -1,4 +1,5 @@
 const { Pedido, Botao, Utente } = require('../models');
+const { notificarAlteracaoBD } = require("../Util/socketIO");
 
 const pedidoController = {
     // Buscar pedidos ativos ordenados por hora de criação (mais recentes primeiro)
@@ -91,6 +92,7 @@ const pedidoController = {
                     { model: Utente, as: 'utente' }
                 ]
             });
+            notificarAlteracaoBD();
             res.status(201).json(pedido);
         } catch (error) {
             res.status(400).json({ erro: 'Erro ao criar o pedido' });
@@ -105,6 +107,7 @@ const pedidoController = {
             });
             if (updated) {
                 const pedidoAtualizado = await Pedido.findByPk(req.params.id);
+                notificarAlteracaoBD();
                 res.json(pedidoAtualizado);
             } else {
                 res.status(404).json({ erro: 'Pedido não encontrado' });
@@ -122,6 +125,7 @@ const pedidoController = {
                 where: { id: req.params.id }
             });
             if (deleted) {
+                notificarAlteracaoBD();
                 res.json({ mensagem: 'Pedido eliminado com sucesso' });
             } else {
                 res.status(404).json({ erro: 'Pedido não encontrado' });
