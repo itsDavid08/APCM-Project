@@ -140,9 +140,7 @@ export const ContextProvider = ({ children }) => {
         if (utenteId) {
             utenteIdRef.current = utenteId;
             fetchUtente(utenteId);
-            if (utente) {
-                fetchPedidosUtilizador(utenteId);
-            }
+            fetchPedidosUtilizador(utenteId);
         }
     }, [utenteId]);
 
