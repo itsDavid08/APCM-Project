@@ -46,11 +46,11 @@ const utenteController = {
     createUtente: async (req, res) => {
         try {
             console.log(req.body);
-            const novoUtente = await Utente.create(req.body);
+             await Utente.create(req.body);
             notificarAlteracaoBD();
-            res.status(201).json(novoUtente);
         } catch (erro) {
             console.error("Erro ao criar utente:", erro);
+            console.log()
             res.status(400).json({ mensagem: erro.message });
         }
     },

@@ -63,6 +63,44 @@ export const ContextProvider = ({ children }) => {
             console.error("Error fetching utente:", error);
         }
     }
+
+    const postUtente = async (utente) => {
+        try {
+            const response = await fetch(apiUrl + "utentes/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(utente),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to create utente");
+            }
+        } catch (error) {
+            console.error("Error creating utente:", error);
+        }
+    }
+
+    const editUtente = async (utente) => {
+        try {
+            const response = await fetch(`${apiUrl}utentes/${utente.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(utente),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to update utente");
+            }
+            const data = await response.json();
+            setUtentes((prevUtentes) =>
+                prevUtentes.map((u) => (u.id === data.id ? data : u))
+            );
+        } catch (error) {
+            console.error("Error updating utente:", error);
+        }
+    }
     /**
      * Fetches pending requests for all patiens, thos requests are ordered by urgency.
      *
@@ -183,6 +221,8 @@ export const ContextProvider = ({ children }) => {
                 deleteUtente,
                 postPedido,
                 fetchUtente,
+                postUtente,
+                editUtente,
                 fetchPedidosUtilizador,
                 updatePedido,
                 fetchPedidosPendentesByEmergencia,

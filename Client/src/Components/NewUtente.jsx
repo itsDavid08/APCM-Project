@@ -1,24 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../ContextProvider";
 
 const NewUtente = () => {
     const navigate = useNavigate();
+    const { postUtente } = useContext(Context);
     const [formData, setFormData] = useState({ nome: '', quarto: '' });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3000/utentes/create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (response.ok) {
-                navigate('/staff');
-            }
+            postUtente(formData);
+            navigate('/staff');
         } catch (error) {
             console.error("Error creating utente:", error);
         }
