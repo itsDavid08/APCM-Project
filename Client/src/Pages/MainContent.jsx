@@ -4,7 +4,7 @@ import { Context } from "../ContextProvider";
 import RequestListDrawer from "../Components/RequestListDrawer.jsx";
 import SuccessModal from "../Components/SuccessModal.jsx";
 
-const MainContentBootstrap = () => {
+const MainContent = () => {
     const { id } = useParams();
     const { utente, setUtente, botoes, postPedido, utenteId, setUtenteId } = useContext(Context);
 
@@ -39,24 +39,30 @@ const MainContentBootstrap = () => {
     const showModal = () => setModalVisible(true);
     const hideModal = () => setModalVisible(false);
 
-    const renderSection = (title, buttons, bgColor, borderColor, colClass) => (
-        <div className="card mb-3" style={{ backgroundColor: bgColor, borderColor: borderColor, borderWidth: "2px" }}>
+    // fixedHeight controla se a seção terá altura fixa ou não
+    const renderSection = (title, buttons, bgColor, borderColor, fixedHeight = false) => (
+        <div className="card mb-3 h-100" style={{ backgroundColor: bgColor, borderColor: borderColor, borderWidth: "2px" }}>
             <div className="card-header text-center fw-bold" style={{ borderColor }}>{title}</div>
-            <div className={`card-body p-2`}>
-                <div className="row g-2">
-                    {buttons.map((button) => (
-                        <div key={button.id} className={colClass}>
-                            <button
-                                className="btn btn-light w-100 h-100 d-flex flex-column align-items-center justify-content-center border border-secondary rounded"
-                                onClick={() => handleButtonClick(button)}
-                                aria-label={button.nome}
-                            >
-                                <img src={button.imagem} alt={button.nome} style={{ maxWidth: "60px", maxHeight: "60px" }} />
-                                <span className="fw-bold mt-2 text-center">{button.nome}</span>
-                            </button>
-                        </div>
-                    ))}
-                </div>
+            <div
+                className="card-body p-2 d-flex flex-row flex-wrap gap-2 justify-content-center align-items-stretch"
+                style={
+                    fixedHeight
+                        ? { minHeight: 260, maxHeight: 260, overflow: "auto" }
+                        : { height: "auto" }
+                }
+            >
+                {buttons.map((button) => (
+                    <button
+                        key={button.id}
+                        className="btn btn-light d-flex flex-column align-items-center justify-content-center border border-secondary rounded"
+                        onClick={() => handleButtonClick(button)}
+                        aria-label={button.nome}
+                        style={{ minWidth: 100, minHeight: 100, maxHeight: 120, flex: "1 1 0" }}
+                    >
+                        <img src={button.imagem} alt={button.nome} style={{ maxWidth: "60px", maxHeight: "60px" }} />
+                        <span className="fw-bold mt-2 text-center">{button.nome}</span>
+                    </button>
+                ))}
             </div>
         </div>
     );
@@ -66,24 +72,33 @@ const MainContentBootstrap = () => {
             <div className="d-flex justify-content-between align-items-center mb-2">
                 <button className="btn btn-outline-dark" onClick={showDrawer}>☰</button>
                 <div className="flex-grow-1 mx-2">
-                    {renderSection("Sinto-me", botoesSintoMe, "#FFF9C4", "#FFD700", "col-6 col-md-2")}
+                    {renderSection("Sinto-me", botoesSintoMe, "#FFF9C4", "#FFD700")}
                 </div>
                 <button className="btn btn-outline-dark" onClick={() => navigate('/utente')}>🛠</button>
             </div>
 
-            <div className="row g-2">
-                <div className="col-12 col-lg-4">
-                    {renderSection("Medicamentos", botoesMedicamentos, "#F3E5F5", "#D8BFD8", "col-6")}
+            <div className="d-flex gap-2 align-items-stretch">
+                <div
+                    className="d-flex flex-column h-100"
+                    style={{ flexGrow: botoesMedicamentos.length, minWidth: 0 }}
+                >
+                    {renderSection("Medicamentos", botoesMedicamentos, "#F3E5F5", "#D8BFD8", true)}
                 </div>
-                <div className="col-12 col-lg-4">
-                    {renderSection("Necessidades", botoesNecessidades, "#EFEBE9", "#D7CCC8", "col-4")}
+                <div
+                    className="d-flex flex-column h-100"
+                    style={{ flexGrow: botoesNecessidades.length, minWidth: 0 }}
+                >
+                    {renderSection("Necessidades", botoesNecessidades, "#EFEBE9", "#D7CCC8", true)}
                 </div>
-                <div className="col-12 col-lg-4">
-                    {renderSection("Tecnologias", botoesTecnologias, "#E1F5FE", "#B3E5FC", "col-3")}
+                <div
+                    className="d-flex flex-column h-100"
+                    style={{ flexGrow: botoesTecnologias.length, minWidth: 0 }}
+                >
+                    {renderSection("Tecnologias", botoesTecnologias, "#E1F5FE", "#B3E5FC", true)}
                 </div>
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mt-3">
+            <div className="d-flex justify-content-between align-items-center mt-1">
                 <button
                     className="btn btn-danger fw-bold"
                     style={{ width: "100px", height: "100px", fontSize: "20px" }}
@@ -93,7 +108,7 @@ const MainContentBootstrap = () => {
                 </button>
 
                 <div className="flex-grow-1 mx-2">
-                    {renderSection("Quero chamar...", botoesChamar, "#FFE0B2", "#FFCC80", "col-4 col-md-2")}
+                    {renderSection("Quero chamar...", botoesChamar, "#FFE0B2", "#FFCC80")}
                 </div>
 
                 <button
@@ -111,4 +126,4 @@ const MainContentBootstrap = () => {
     );
 };
 
-export default MainContentBootstrap;
+export default MainContent;
