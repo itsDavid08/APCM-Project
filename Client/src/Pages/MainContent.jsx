@@ -45,11 +45,7 @@ const MainContent = () => {
             <div className="card-header text-center fw-bold" style={{ borderColor }}>{title}</div>
             <div
                 className="card-body p-2 d-flex flex-row flex-wrap gap-2 justify-content-center align-items-stretch"
-                style={
-                    fixedHeight
-                        ? { minHeight: 260, maxHeight: 260, overflow: "auto" }
-                        : { height: "auto" }
-                }
+                style={{ height: "auto" }}
             >
                 {buttons.map((button) => (
                     <button
@@ -82,19 +78,19 @@ const MainContent = () => {
                     className="d-flex flex-column h-100"
                     style={{ flexGrow: botoesMedicamentos.length, minWidth: 0 }}
                 >
-                    {renderSection("Medicamentos", botoesMedicamentos, "#F3E5F5", "#D8BFD8", true)}
+                    {renderSection("Medicamentos", botoesMedicamentos, "#F3E5F5", "#D8BFD8", false)}
                 </div>
                 <div
                     className="d-flex flex-column h-100"
                     style={{ flexGrow: botoesNecessidades.length, minWidth: 0 }}
                 >
-                    {renderSection("Necessidades", botoesNecessidades, "#EFEBE9", "#D7CCC8", true)}
+                    {renderSection("Necessidades", botoesNecessidades, "#EFEBE9", "#D7CCC8", false)}
                 </div>
                 <div
                     className="d-flex flex-column h-100"
                     style={{ flexGrow: botoesTecnologias.length, minWidth: 0 }}
                 >
-                    {renderSection("Tecnologias", botoesTecnologias, "#E1F5FE", "#B3E5FC", true)}
+                    {renderSection("Tecnologias", botoesTecnologias, "#E1F5FE", "#B3E5FC", false)}
                 </div>
             </div>
 
