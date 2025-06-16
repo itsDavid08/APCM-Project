@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Context } from "../ContextProvider";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
@@ -10,6 +10,7 @@ function PedidosPendentes() {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const itensPorPagina = 4;
     const navigate = useNavigate();
+    const audioRef = useRef(null);
 
     const indexUltimoItem = paginaAtual * itensPorPagina;
     const indexPrimeiroItem = indexUltimoItem - itensPorPagina;
@@ -23,7 +24,7 @@ function PedidosPendentes() {
         setPedidosEsquerda(esquerda);
         setPedidosDireita(direita);
 
-        console.log(pedidosPendentes);
+        // console.log(pedidosPendentes);
     }, [pedidosPendentes]);
 
     useEffect(() => {
@@ -52,7 +53,41 @@ function PedidosPendentes() {
         };
     }, [navigate, paginaAtual, totalPaginas]);
 
+    // Efeito para tocar o áudio de emergência
+    useEffect(() => {
 
+        console.log("1");
+        if (!audioRef.current) {
+            console.log("2");
+            audioRef.current = new Audio("/Warning-alarm-tone.mp3");
+            audioRef.current.loop = true;
+        }
+
+        const existeEmergencia = pedidosPendentes.some(p => p.emergencia);
+
+        console.log("3");
+        if (existeEmergencia) {
+            console.log("4");
+            audioRef.current.play().catch(() => {});
+            console.log("5");
+        } else {
+            console.log("6");
+            audioRef.current.pause();
+            console.log("7");
+            audioRef.current.currentTime = 0;
+            console.log("8");
+        }
+
+        return () => {
+            if (audioRef.current) {
+                console.log("9");
+                audioRef.current.pause();
+                console.log("10");
+                audioRef.current.currentTime = 0;
+                console.log("11");
+            }
+        };
+    });
 
     const mudarPagina = (novaPagina) => {
         setPaginaAtual(novaPagina);
@@ -60,9 +95,7 @@ function PedidosPendentes() {
 
     return (
         <div className="pedidos-container">
-
             <div className="pedidos-columnas">
-
                 <div className="coluna-emergencia">
                     <h1 className="pedidos-titulo">Lista de Pedidos Pendentes</h1>
                     {pedidosEsquerda.map((pedido, index) => (
@@ -106,7 +139,6 @@ function PedidosPendentes() {
                                 </div>
                             </div>
                         </div>
-
                     ))}
                     </div>
 
@@ -114,7 +146,6 @@ function PedidosPendentes() {
                             <button style={{border : "none"}} onClick={() => mudarPagina(paginaAtual + 1)} >▶</button>
                     )}
                 </div>
-
             </div>
         </div>
     );

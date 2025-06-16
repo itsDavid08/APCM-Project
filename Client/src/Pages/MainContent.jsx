@@ -1,279 +1,114 @@
-import {useParams} from "react-router-dom";
-import {useContext, useState, useEffect} from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../ContextProvider";
-import { useNavigate } from "react-router-dom";
 import RequestListDrawer from "../Components/RequestListDrawer.jsx";
 import SuccessModal from "../Components/SuccessModal.jsx";
 
-
-const MainContent = () => {
+const MainContentBootstrap = () => {
     const { id } = useParams();
-    const { utente, setUtente } = useContext(Context);
-    const { botoes } = useContext(Context);
-    const {postPedido} = useContext(Context);
-    const { utenteId, setUtenteId } = useContext(Context);
+    const { utente, setUtente, botoes, postPedido, utenteId, setUtenteId } = useContext(Context);
 
     const botoesSintoMe = botoes.filter(b => b.categoria === "Sinto-me");
     const botoesMedicamentos = botoes.filter(b => b.categoria === "Medicamentos");
     const botoesNecessidades = botoes.filter(b => b.categoria === "Necessidades");
     const botoesTecnologias = botoes.filter(b => b.categoria === "Tecnologias");
     const botoesChamar = botoes.filter(b => b.categoria === "Chamar");
-
+    const SOS_BUTTON = botoes.find(b => b.nome === "SOS");
 
     const [isDrawerVisible, setDrawerVisible] = useState(false);
     const [isModalVisible, setModalVisible] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!utente || utente.id !== id) setUtenteId(id);
+    }, [id]);
+
+    const handleButtonClick = (button) => {
+        showModal();
+        setTimeout(() => hideModal(), 1000);
+        const novoPedido = {
+            emergencia: button.nome === "SOS",
+            utenteId: utente.id,
+            botaoId: button.id,
+        };
+        postPedido(novoPedido);
+    };
 
     const showDrawer = () => setDrawerVisible(true);
     const hideDrawer = () => setDrawerVisible(false);
     const showModal = () => setModalVisible(true);
     const hideModal = () => setModalVisible(false);
 
-    const SOS_BUTTON = botoes.find(b => b.nome === "SOS");
-
-    useEffect(() => {
-        if (utente == null || utente.id !== id) {
-            setUtenteId(id);
-        }
-
-    },[id]);
-
-    const navigate = useNavigate();
-
-    // Datos organizados según los requisitos
-    const sections = [
-        {
-            title: "Sinto-me",
-            borderColor: "#FFD700", // Amarillo
-            backgroundColor: "#FFF9C4", // Amarillo claro
-            gridClass: "single-row",
-            buttons: botoesSintoMe,
-        },
-        {
-            title: "Medicamentos",
-            borderColor: "#D8BFD8", // Lila claro
-            backgroundColor: "#F3E5F5", // Lila más claro
-            gridClass: "grid-2x2",
-            buttons: botoesMedicamentos,
-        },
-        {
-            title: "Necessidades",
-            borderColor: "#D7CCC8", // Beige
-            backgroundColor: "#EFEBE9", // Beige claro
-            gridClass: "grid-4x2",
-            buttons: botoesNecessidades,
-        },
-        {
-            title: "Tecnologias",
-            borderColor: "#B3E5FC", // Azul claro
-            backgroundColor: "#E1F5FE", // Azul más claro
-            gridClass: "grid-6x2",
-            buttons: botoesTecnologias,
-        },
-        {
-            title: "Quero chamar...",
-            borderColor: "#FFCC80", // Naranja
-            backgroundColor: "#FFE0B2", // Naranja claro
-            gridClass: "grid-3x2",
-            buttons: botoesChamar,
-        }
-    ];
-
-    const handleButtonClick = (button) => {
-        // Mostrar el modal
-        showModal();
-
-        // Ocultar el modal después de 3 segundos (3000 milisegundos)
-        setTimeout(() => {
-            hideModal();
-        }, 1000);
-
-        console.log(`Botón "${button.nome}" presionado`);
-
-        var novoPedido = {
-            emergencia: button.nome ==="SOS",
-            utenteId: utente.id,
-            botaoId: button.id
-        };
-        console.log("Novo pedido:");
-        console.log(novoPedido);
-        postPedido(novoPedido);
-
-    };
-
-    return (
-        <>
-        <div className="aac-container">
-            <div className="first-line-section">
-                <button
-                    className="menu-button option-button"
-                    onClick={showDrawer}
-                >
-                    <span className="hamburger-icon">☰</span>
-                </button>
-
-
-                {/* Línea 1 - Sinto-me */}
-                <div
-                    className="aac-section first-line fill-line"
-                    style={{
-                        borderColor: sections[0].borderColor,
-                        backgroundColor: sections[0].backgroundColor
-                    }}
-                >
-                    <h3>{sections[0].title}</h3>
-                    <div className={`aac-buttons ${sections[0].gridClass}`}>
-                        {sections[0].buttons.map((button) => (
+    const renderSection = (title, buttons, bgColor, borderColor, colClass) => (
+        <div className="card mb-3" style={{ backgroundColor: bgColor, borderColor: borderColor, borderWidth: "2px" }}>
+            <div className="card-header text-center fw-bold" style={{ borderColor }}>{title}</div>
+            <div className={`card-body p-2`}>
+                <div className="row g-2">
+                    {buttons.map((button) => (
+                        <div key={button.id} className={colClass}>
                             <button
-                                key={button.id}
-                                className="aac-button"
+                                className="btn btn-light w-100 h-100 d-flex flex-column align-items-center justify-content-center border border-secondary rounded"
                                 onClick={() => handleButtonClick(button)}
                                 aria-label={button.nome}
                             >
-                                <img src={button.imagem} alt={button.nome} />
-                                <span>{button.nome}</span>
+                                <img src={button.imagem} alt={button.nome} style={{ maxWidth: "60px", maxHeight: "60px" }} />
+                                <span className="fw-bold mt-2 text-center">{button.nome}</span>
                             </button>
-                        ))}
-                    </div>
-                </div>
-
-                <button
-                    className="settings-button option-button"
-                    onClick={() => navigate('/utente')}
-                    aria-label="Menú principal"
-                >
-                    <span>🛠</span>
-                </button>
-            </div>
-
-            {/* Contenido principal */}
-
-
-
-                {/* Línea 2 - Tres secciones */}
-                <div className="second-line-section">
-                    {/* Medicamentos */}
-                    <div
-                        className="aac-section"
-                        style={{
-                            borderColor: sections[1].borderColor,
-                            backgroundColor: sections[1].backgroundColor
-                        }}
-                    >
-                        <h3>{sections[1].title}</h3>
-                        <div className={`aac-buttons ${sections[1].gridClass}`}>
-                            {sections[1].buttons.map((button) => (
-                                <button
-                                    key={button.id}
-                                    className="aac-button"
-                                    onClick={() => handleButtonClick(button)}
-                                    aria-label={button.text}
-                                >
-                                    <img src={button.imagem} alt={button.nome} />
-                                    <span>{button.nome}</span>
-                                </button>
-                            ))}
                         </div>
-                    </div>
-
-                    {/* Necessidades */}
-                    <div
-                        className="aac-section"
-                        style={{
-                            borderColor: sections[2].borderColor,
-                            backgroundColor: sections[2].backgroundColor
-                        }}
-                    >
-                        <h3>{sections[2].title}</h3>
-                        <div className={`aac-buttons ${sections[2].gridClass}`}>
-                            {sections[2].buttons.map((button) => (
-                                <button
-                                    key={button.id}
-                                    className="aac-button"
-                                    onClick={() => handleButtonClick(button)}
-                                    aria-label={button.nome}
-                                >
-                                    <img src={button.imagem} alt={button.nome} />
-                                    <span>{button.nome}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Tecnologias */}
-                    <div
-                        className="aac-section"
-                        style={{
-                            borderColor: sections[3].borderColor,
-                            backgroundColor: sections[3].backgroundColor
-                        }}
-                    >
-                        <h3>{sections[3].title}</h3>
-                        <div className={`aac-buttons ${sections[3].gridClass}`}>
-                            {sections[3].buttons.map((button) => (
-                                <button
-                                    key={button.id}
-                                    className="aac-button"
-                                    onClick={() => handleButtonClick(button)}
-                                    aria-label={button.nome}
-                                >
-                                    <img src={button.imagem} alt={button.nome} />
-                                    <span>{button.nome}</span>
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    ))}
                 </div>
-
-            <div className="last-line-section" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <button
-                className="sos-button"
-                onClick={() => handleButtonClick(SOS_BUTTON)}
-                aria-label="Botón de emergencia"
-            >
-                SOS
-            </button>
-
-                {/* Línea 3 - Quero chamar... */}
-                <div
-                    className="aac-section last-line fill-line"
-                    style={{
-                        borderColor: sections[4].borderColor,
-                        backgroundColor: sections[4].backgroundColor
-                    }}
-                >
-
-
-                    <h3>{sections[4].title}</h3>
-                    <div className={`aac-buttons ${sections[4].gridClass}`}>
-                        {sections[4].buttons.map((button) => (
-                            <button
-                                key={button.id}
-                                className="aac-button"
-                                onClick={() => handleButtonClick(button)}
-                                aria-label={button.nome}
-                            >
-                                <img src={button.imagem} alt={button.nome} />
-                                <span>{button.nome}</span>
-                            </button>
-                        ))}
-                    </div>
-
-                </div>
-            <button
-                className="sos-button"
-                onClick={() => handleButtonClick(SOS_BUTTON)}
-                aria-label="Botón de emergencia"
-            >
-                SOS
-            </button>
             </div>
         </div>
+    );
+
+    return (
+        <div className="container-fluid p-2">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+                <button className="btn btn-outline-dark" onClick={showDrawer}>☰</button>
+                <div className="flex-grow-1 mx-2">
+                    {renderSection("Sinto-me", botoesSintoMe, "#FFF9C4", "#FFD700", "col-6 col-md-2")}
+                </div>
+                <button className="btn btn-outline-dark" onClick={() => navigate('/utente')}>🛠</button>
+            </div>
+
+            <div className="row g-2">
+                <div className="col-12 col-lg-4">
+                    {renderSection("Medicamentos", botoesMedicamentos, "#F3E5F5", "#D8BFD8", "col-6")}
+                </div>
+                <div className="col-12 col-lg-4">
+                    {renderSection("Necessidades", botoesNecessidades, "#EFEBE9", "#D7CCC8", "col-4")}
+                </div>
+                <div className="col-12 col-lg-4">
+                    {renderSection("Tecnologias", botoesTecnologias, "#E1F5FE", "#B3E5FC", "col-3")}
+                </div>
+            </div>
+
+            <div className="d-flex justify-content-between align-items-center mt-3">
+                <button
+                    className="btn btn-danger fw-bold"
+                    style={{ width: "100px", height: "100px", fontSize: "20px" }}
+                    onClick={() => handleButtonClick(SOS_BUTTON)}
+                >
+                    SOS
+                </button>
+
+                <div className="flex-grow-1 mx-2">
+                    {renderSection("Quero chamar...", botoesChamar, "#FFE0B2", "#FFCC80", "col-4 col-md-2")}
+                </div>
+
+                <button
+                    className="btn btn-danger fw-bold"
+                    style={{ width: "100px", height: "100px", fontSize: "20px" }}
+                    onClick={() => handleButtonClick(SOS_BUTTON)}
+                >
+                    SOS
+                </button>
+            </div>
 
             <SuccessModal visible={isModalVisible} onClose={hideModal} />
-            <RequestListDrawer visible={isDrawerVisible} onClose={hideDrawer} utente={utente}/>
-    </>
-
+            <RequestListDrawer visible={isDrawerVisible} onClose={hideDrawer} utente={utente} />
+        </div>
     );
 };
 
-export default MainContent;
+export default MainContentBootstrap;
