@@ -8,7 +8,7 @@ function PedidosPendentes() {
     const [pedidosEsquerda, setPedidosEsquerda] = useState([]);
     const [pedidosDireita, setPedidosDireita] = useState([]);
     const [paginaAtual, setPaginaAtual] = useState(1);
-    const itensPorPagina = 4;
+    const itensPorPagina = 5;
     const navigate = useNavigate();
     const audioRef = useRef(null);
 
@@ -56,35 +56,24 @@ function PedidosPendentes() {
     // Efeito para tocar o áudio de emergência
     useEffect(() => {
 
-        console.log("1");
         if (!audioRef.current) {
-            console.log("2");
             audioRef.current = new Audio("/Warning-alarm-tone.mp3");
             audioRef.current.loop = true;
         }
 
         const existeEmergencia = pedidosPendentes.some(p => p.emergencia);
 
-        console.log("3");
         if (existeEmergencia) {
-            console.log("4");
             audioRef.current.play().catch(() => {});
-            console.log("5");
         } else {
-            console.log("6");
             audioRef.current.pause();
-            console.log("7");
             audioRef.current.currentTime = 0;
-            console.log("8");
         }
 
         return () => {
             if (audioRef.current) {
-                console.log("9");
                 audioRef.current.pause();
-                console.log("10");
                 audioRef.current.currentTime = 0;
-                console.log("11");
             }
         };
     });
@@ -105,8 +94,8 @@ function PedidosPendentes() {
                                     <img src={pedido.botao?.imagem || ""} alt="" style={{ width: '70%' }} />
                                 </div>
                                 <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
-                                    <h2 style={{ margin: 0, fontSize: '40px', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
-                                    <p style={{fontSize: "24px"}}>
+                                    <h2 style={{ margin: 0, fontSize: 'clamp(32px, 4vw, 40px)', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
+                                    <p style={{fontSize: "clamp(18px, 3vw, 24px)"}}>
                                         {pedido.utente?.nome} - <strong>{pedido.utente?.quarto}</strong> - {" "}
                                         {new Date(pedido.hora).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
                                         {" - "}
@@ -129,8 +118,8 @@ function PedidosPendentes() {
                                     <img src={pedido.botao?.imagem || ""} alt="" style={{ width: '70%' }} />
                                 </div>
                                 <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
-                                    <h2 style={{ margin: 0, fontSize: '28px', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
-                                    <p style={{fontSize: "22px"}}>
+                                    <h2 style={{ margin: 0, fontSize: 'clamp(16px, 2vw, 28px)', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
+                                    <p style={{fontSize: "clamp(14px, 2vw, 22px)"}}>
                                         {pedido.utente?.nome}- <strong>{pedido.utente?.quarto}</strong> - {" "}
                                         {new Date(pedido.hora).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
                                         {" - "}

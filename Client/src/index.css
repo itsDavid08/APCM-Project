@@ -514,6 +514,7 @@ body {
 
 /* Emergency column */
 .coluna-emergencia {
+  background-color: #ffffff;
   flex: 1;
   padding: 20px;
   border-radius: 15px;
@@ -539,11 +540,11 @@ body {
 }
 
 .Item-Pequeno{
-
+  height: 18%;
 }
 
 .Item-Grande{
-    height: 300px;
+    height: 40%;
 }
 
 .pedido-icono{

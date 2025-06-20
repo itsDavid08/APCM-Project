@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { Context } from "../ContextProvider";
 import RequestListDrawer from "../Components/RequestListDrawer.jsx";
 import SuccessModal from "../Components/SuccessModal.jsx";
@@ -7,6 +7,7 @@ import SuccessModal from "../Components/SuccessModal.jsx";
 const MainContent = () => {
     const { id } = useParams();
     const { utente, setUtente, botoes, postPedido, utenteId, setUtenteId } = useContext(Context);
+    const audioRef = useRef(null);
 
     const botoesSintoMe = botoes.filter(b => b.categoria === "Sinto-me");
     const botoesMedicamentos = botoes.filter(b => b.categoria === "Medicamentos");
@@ -22,6 +23,26 @@ const MainContent = () => {
     useEffect(() => {
         if (!utente || utente.id !== id) setUtenteId(id);
     }, [id]);
+
+    useEffect(() => {
+        if (!audioRef.current) {
+            audioRef.current = new Audio("/Warning-alarm-tone.mp3");
+            audioRef.current.loop = true;
+        }
+        const existeEmergencia = utente?.pedidos?.some(p => p.emergencia);
+        if (existeEmergencia) {
+            audioRef.current.play().catch(() => {});
+        } else {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+            }
+        };
+    });
 
     const handleButtonClick = (button) => {
         showModal();
