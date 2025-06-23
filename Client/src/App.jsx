@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ContextProvider } from "./ContextProvider";
-import Config from "./Components/Config";
+
 import UtenteHome from "./Pages/UtenteHome.jsx";
 import MainContent from "./Pages/MainContent";
 import StaffHome from "./Pages/StaffHome.jsx";
