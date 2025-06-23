@@ -61,7 +61,6 @@ const botaoController = {
     // Eliminar um botão
     deleteBotao: async (req, res) => {
         const botaoId = req.params.id;
-        console.log("Eliminando botão com ID:", botaoId);
         try {
             const deleted = await Botao.destroy({
                 where: { id: botaoId }
@@ -74,6 +73,7 @@ const botaoController = {
             }
         } catch (error) {
             res.status(500).json({ erro: 'Erro ao eliminar o botão' });
+            console.log("Erro ao eliminar o botão:", error);
         }
     }
 };

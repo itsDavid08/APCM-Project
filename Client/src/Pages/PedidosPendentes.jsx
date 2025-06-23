@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../index.css";
 
 function PedidosPendentes() {
-    const { pedidosPendentes } = useContext(Context);
+    const { pedidosPendentes, apiUrl} = useContext(Context);
     const [pedidosEsquerda, setPedidosEsquerda] = useState([]);
     const [pedidosDireita, setPedidosDireita] = useState([]);
     const [paginaAtual, setPaginaAtual] = useState(1);
@@ -91,7 +91,7 @@ function PedidosPendentes() {
                         <div key={index} className={`Item-Pedido Item-Grande ${pedido.emergencia ? "Pedido-Emergencia" : ""}`}>
                             <div style={{ display: 'flex', alignItems: 'center',gap: "10px", width: '100%', justifyContent: 'space-between', height: '100%' }}>
                                 <div className="pedido-icono iconoGrande">
-                                    <img src={pedido.botao?.imagem || ""} alt="" style={{ width: '70%' }} />
+                                    <img src={apiUrl + pedido.botao?.imagem || ""} alt="" style={{ width: '70%' }} />
                                 </div>
                                 <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
                                     <h2 style={{ margin: 0, fontSize: 'clamp(32px, 4vw, 40px)', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>
@@ -115,7 +115,7 @@ function PedidosPendentes() {
                         <div key={index} className={`Item-Pedido Item-Pequeno ${pedido.emergencia ? "Pedido-Emergencia" : ""}`}>
                             <div style={{ display: 'flex', alignItems: 'center',gap: "10px", width: '100%', justifyContent: 'space-between', height: '100%' }}>
                                 <div className="pedido-icono iconoPequeno">
-                                    <img src={pedido.botao?.imagem || ""} alt="" style={{ width: '70%' }} />
+                                    <img src={apiUrl + pedido.botao?.imagem || ""} alt="" style={{ width: '70%' }} />
                                 </div>
                                 <div style={{ display: 'flex',flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%', justifyContent: 'space-between' }}>
                                     <h2 style={{ margin: 0, fontSize: 'clamp(16px, 2vw, 28px)', wordBreak: "break-word", textAlign: "center" }}>{pedido.botao?.mensagem || ""}</h2>

@@ -1,4 +1,3 @@
-// migrations/XXXXXXXXXXXXXX-create-botoes.js
 'use strict';
 
 module.exports = {

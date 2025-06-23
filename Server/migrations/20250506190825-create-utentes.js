@@ -1,4 +1,3 @@
-// migrations/XXXXXXXXXXXXXX-create-utentes.js
 'use strict';
 
 module.exports = {

@@ -1,4 +1,3 @@
-// migrations/XXXXXXXXXXXXXX-create-utente-botoes.js
 'use strict';
 
 module.exports = {

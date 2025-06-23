@@ -42,7 +42,7 @@ Botao.associate = (models) => {
     Botao.hasMany(models.Pedido, {
         foreignKey: "botaoId",
         as: "pedidos",
-        onDelete: 'RESTRICT', // Evita borrar botones con pedidos existentes
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
     });
 };

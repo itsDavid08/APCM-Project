@@ -4,7 +4,7 @@ import { Context } from "../ContextProvider";
 
 const RequestListDrawer = ({ visible, onClose }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { pedidosUtilizador } = useContext(Context);
+    const { pedidosUtilizador, apiUrl } = useContext(Context);
     const { updatePedido } = useContext(Context);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const RequestListDrawer = ({ visible, onClose }) => {
                         {pedidosUtilizador.map((item) => (
                             <div key={item.id} className="request-item">
                                 <img
-                                    src={item.botao.imagem || "imagesBotoes/default.png"}
+                                    src={apiUrl+(item.botao.imagem || "imagesBotoes/default.png")}
                                     alt={item.botao.nome}
                                     className="request-icon"
                                 />

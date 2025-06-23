@@ -1,4 +1,3 @@
-// migrations/XXXXXXXXXXXXXX-create-pedidos.js
 'use strict';
 
 module.exports = {

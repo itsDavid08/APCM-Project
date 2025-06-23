@@ -6,7 +6,7 @@ import SuccessModal from "../Components/SuccessModal.jsx";
 
 const MainContent = () => {
     const { id } = useParams();
-    const { utente, setUtente, botoes, postPedido, utenteId, setUtenteId } = useContext(Context);
+    const { utente, setUtente, botoes, postPedido, utenteId, setUtenteId, apiUrl } = useContext(Context);
     const audioRef = useRef(null);
 
     const botoesSintoMe = botoes.filter(b => b.categoria === "Sinto-me");
@@ -76,7 +76,7 @@ const MainContent = () => {
                         aria-label={button.nome}
                         style={{ minWidth: 100, minHeight: 100, maxHeight: 120, flex: "1 1 0" }}
                     >
-                        <img src={button.imagem} alt={button.nome} style={{ maxWidth: "60px", maxHeight: "60px" }} />
+                        <img src={apiUrl + button.imagem} alt={button.nome} style={{ maxWidth: "60px", maxHeight: "60px" }} />
                         <span className="fw-bold mt-2 text-center">{button.nome}</span>
                     </button>
                 ))}

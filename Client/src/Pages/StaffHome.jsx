@@ -82,6 +82,9 @@ const UtenteHome = () => {
                 <button className="sidebar-button" onClick={handleNew}>
                     Novo
                 </button>
+                <button className="sidebar-button" onClick={() => navigate("/editBotoes")}>
+                    Editar Botões
+                </button>
                 <button
                     className="sidebar-button"
                     onClick={handlePendingRequests}

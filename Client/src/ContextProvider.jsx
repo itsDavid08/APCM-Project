@@ -3,7 +3,6 @@ import { createContext, useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
 export const Context = createContext(); // Exportación nombrada
-const apiUrl = `${window.location.protocol}//${window.location.hostname}:3000/`;
 
 export const ContextProvider = ({ children }) => {
     const [utenteId, setUtenteId] = useState(null);
@@ -12,6 +11,7 @@ export const ContextProvider = ({ children }) => {
     const [botoes, setBotoes] = useState([]);
     const [pedidosUtilizador, setPedidosUtilizador] = useState([]);
     const [pedidosPendentes, setPedidosPendentes] = useState([]);
+    const [apiUrl, setApiUrl] = useState(`${window.location.protocol}//${window.location.hostname}:3000/`);
 
     const utenteIdRef = useRef(utenteId);
 
@@ -38,6 +38,46 @@ export const ContextProvider = ({ children }) => {
         }
 
     };
+
+    const editBotao = async (botao) => {
+        try {
+            const response = await fetch(`${apiUrl}botoes/${botao.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(botao),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to update botao");
+            }
+            const updatedBotao = await response.json();
+            setBotoes((prevBotoes) =>
+                prevBotoes.map((b) => (b.id === updatedBotao.id ? updatedBotao : b))
+            );
+        } catch (error) {
+            console.error("Error updating botao:", error);
+        }
+    }
+
+    const postBotao = async (botao) => {
+        try {
+            const response = await fetch(apiUrl + "botoes", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(botao),
+            });
+            if (!response.ok) {
+                throw new Error("Failed to create botao");
+            }
+            const newBotao = await response.json();
+            setBotoes((prevBotoes) => [...prevBotoes, newBotao]);
+        } catch (error) {
+            console.error("Error creating botao:", error);
+        }
+    }
 
     const fetchPedidosUtilizador = async (id) => {
         try {
@@ -163,6 +203,20 @@ export const ContextProvider = ({ children }) => {
         }
     }
 
+    const deleteBotao = async (id) => {
+        try {
+            const response = await fetch(`${apiUrl}botoes/${id}`, {
+                method: "DELETE",
+            });
+            if (!response.ok) {
+                throw new Error("Failed to delete botao");
+            }
+            setBotoes((prevBotoes) => prevBotoes.filter((b) => b.id !== id));
+        } catch (error) {
+            console.error("Error deleting botao:", error);
+        }
+    }
+
 
 
 
@@ -220,12 +274,16 @@ export const ContextProvider = ({ children }) => {
                 setPedidosPendentes,
                 deleteUtente,
                 postPedido,
+                postBotao,
                 fetchUtente,
                 postUtente,
                 editUtente,
+                editBotao,
                 fetchPedidosUtilizador,
                 updatePedido,
                 fetchPedidosPendentesByEmergencia,
+                deleteBotao,
+                apiUrl,
             }}
         >
             {children}
