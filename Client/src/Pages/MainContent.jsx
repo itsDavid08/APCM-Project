@@ -44,6 +44,9 @@ const MainContent = () => {
     });
 
     const handleButtonClick = (button) => {
+
+        const audio = new Audio("/Check-mark-ding-sound-effect.mp3");
+        audio.play().catch(() => {});
         showModal();
         setTimeout(() => hideModal(), 1000);
         const novoPedido = {
@@ -101,7 +104,7 @@ const MainContent = () => {
                         className="btn btn-light d-flex flex-column align-items-center justify-content-center border border-secondary rounded"
                         onClick={() => handleButtonClick(button)}
                         aria-label={button.nome}
-                        style={{ minWidth: 100, height: "16vh", maxHeight: 120, flex: "1 1 0" }}
+                        style={{ minWidth: 100, minHeight: 100, height: "16vh", maxHeight: 120, flex: "1 1 0" }}
                     >
                         <img src={apiUrl + button.imagem} alt={button.nome} style={{ maxWidth: "50px", maxHeight: "50px" }} />
                         <span className="fw-bold mt-2 text-center">{button.nome}</span>

@@ -99,6 +99,7 @@ const pedidoController = {
             });
 
             if (pedidoExistente) {
+                notificarAlteracaoBD();
                 return res.status(201);
             }
 

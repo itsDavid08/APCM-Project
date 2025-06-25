@@ -10,7 +10,8 @@ function PedidosPendentes() {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const itensPorPagina = 5;
     const navigate = useNavigate();
-    const audioRef = useRef(null);
+    const bellRef = useRef(null);
+    const warningRef = useRef(null);
 
     const indexUltimoItem = paginaAtual * itensPorPagina;
     const indexPrimeiroItem = indexUltimoItem - itensPorPagina;
@@ -53,28 +54,32 @@ function PedidosPendentes() {
         };
     }, [navigate, paginaAtual, totalPaginas]);
 
-    // Efeito para tocar o áudio de emergência
     useEffect(() => {
-
-        if (!audioRef.current) {
-            audioRef.current = new Audio("/Warning-alarm-tone.mp3");
-            audioRef.current.loop = true;
+        if (!bellRef.current) {
+            bellRef.current = new window.Audio("/Hand-bell-rings-sound-effect.mp3");
+        }
+        if (!warningRef.current) {
+            warningRef.current = new window.Audio("/Warning-alarm-tone.mp3");
+            warningRef.current.loop = true;
         }
 
         const existeEmergencia = pedidosPendentes.some(p => p.emergencia);
 
+        if (!existeEmergencia) {
+            warningRef.current.pause();
+            warningRef.current.currentTime = 0;
+        }
+
         if (existeEmergencia) {
-            audioRef.current.play().catch(() => {});
-        } else {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
+            warningRef.current.play().catch(() => {});
+        } else if (pedidosPendentes.length > 0) {
+            bellRef.current.currentTime = 0;
+            bellRef.current.play().catch(() => {});
         }
 
         return () => {
-            if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.currentTime = 0;
-            }
+            warningRef.current?.pause();
+            warningRef.current.currentTime = 0;
         };
     });
 
