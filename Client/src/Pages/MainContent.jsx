@@ -6,11 +6,10 @@ import SuccessModal from "../Components/SuccessModal.jsx";
 
 const MainContent = () => {
     const { id } = useParams();
-    const { utente, setUtente, botoes, postPedido, utenteId, setUtenteId, apiUrl } = useContext(Context);
+    const { utente, botoes, postPedido, updatePedido, setUtenteId, apiUrl } = useContext(Context);
     const audioRef = useRef(null);
 
     const botoesSintoMe = botoes.filter(b => b.categoria === "Sinto-me");
-    const botoesMedicamentos = botoes.filter(b => b.categoria === "Medicamentos");
     const botoesNecessidades = botoes.filter(b => b.categoria === "Necessidades");
     const botoesTecnologias = botoes.filter(b => b.categoria === "Tecnologias");
     const botoesChamar = botoes.filter(b => b.categoria === "Chamar");
@@ -48,12 +47,40 @@ const MainContent = () => {
         showModal();
         setTimeout(() => hideModal(), 1000);
         const novoPedido = {
-            emergencia: button.nome === "SOS",
+            emergencia: false,
             utenteId: utente.id,
             botaoId: button.id,
         };
         postPedido(novoPedido);
     };
+
+    const handleButtonSOS = () => {
+        showModal();
+        setTimeout(() => hideModal(), 1000);
+
+        // Verifica se já existe um pedido de emergência pendente para este utente e botão
+        const pedidoEmergencia = utente?.pedidos?.find(
+            p => p.botaoId === SOS_BUTTON.id && p.emergencia && p.estado === "pendente"
+        );
+
+        if (pedidoEmergencia) {
+            // Cancela o pedido de emergência existente
+            updatePedido({ ...pedidoEmergencia, estado: "cancelado" }, "cancelado");
+        } else {
+            // Cria novo pedido de emergência
+            const novoPedido = {
+                emergencia: true,
+                utenteId: utente.id,
+                botaoId: SOS_BUTTON.id,
+            };
+            postPedido(novoPedido);
+        }
+    }
+
+    const cancelarTodosPedidos = () => {
+        utente?.pedidos.forEach((pedido) => updatePedido(pedido, "cancelado"));
+    };
+
 
     const showDrawer = () => setDrawerVisible(true);
     const hideDrawer = () => setDrawerVisible(false);
@@ -74,9 +101,9 @@ const MainContent = () => {
                         className="btn btn-light d-flex flex-column align-items-center justify-content-center border border-secondary rounded"
                         onClick={() => handleButtonClick(button)}
                         aria-label={button.nome}
-                        style={{ minWidth: 100, minHeight: 100, maxHeight: 120, flex: "1 1 0" }}
+                        style={{ minWidth: 100, height: "16vh", maxHeight: 120, flex: "1 1 0" }}
                     >
-                        <img src={apiUrl + button.imagem} alt={button.nome} style={{ maxWidth: "60px", maxHeight: "60px" }} />
+                        <img src={apiUrl + button.imagem} alt={button.nome} style={{ maxWidth: "50px", maxHeight: "50px" }} />
                         <span className="fw-bold mt-2 text-center">{button.nome}</span>
                     </button>
                 ))}
@@ -85,9 +112,39 @@ const MainContent = () => {
     );
 
     return (
-        <div className="container-fluid p-2">
+        <div className="container-fluid p-2 d-flex flex-column justify-content-center" style={{ height: "100vh" }}>
             <div className="d-flex justify-content-between align-items-center mb-2">
-                <button className="btn btn-outline-dark" onClick={showDrawer}>☰</button>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
+                    {utente?.pedidos?.length > 0 && (
+                        <button
+                            className="btn btn-success mb-1"
+                            style={{ fontWeight: "bold", minWidth: 90 }}
+                            onClick={cancelarTodosPedidos}
+                        >
+                            Estou Bem
+                        </button>
+                    )}
+                    <div style={{ position: "relative", display: "inline-block" }}>
+                        <button className="btn btn-outline-dark" onClick={showDrawer}>☰</button>
+                        {utente?.pedidos?.length > 0 && (
+                            <span
+                                style={{
+                                    position: "absolute",
+                                    top: 2,
+                                    right: 2,
+                                    width: 12,
+                                    height: 12,
+                                    background: "red",
+                                    borderRadius: "50%",
+                                    border: "2px solid white",
+                                    zIndex: 1,
+                                    display: "block"
+                                }}
+                            />
+                        )}
+                    </div>
+                </div>
+
                 <div className="flex-grow-1 mx-2">
                     {renderSection("Sinto-me", botoesSintoMe, "#FFF9C4", "#FFD700")}
                 </div>
@@ -95,12 +152,6 @@ const MainContent = () => {
             </div>
 
             <div className="d-flex gap-2 align-items-stretch">
-                <div
-                    className="d-flex flex-column h-100"
-                    style={{ flexGrow: botoesMedicamentos.length, minWidth: 0 }}
-                >
-                    {renderSection("Medicamentos", botoesMedicamentos, "#F3E5F5", "#D8BFD8", false)}
-                </div>
                 <div
                     className="d-flex flex-column h-100"
                     style={{ flexGrow: botoesNecessidades.length, minWidth: 0 }}
@@ -119,7 +170,7 @@ const MainContent = () => {
                 <button
                     className="btn btn-danger fw-bold"
                     style={{ width: "100px", height: "100px", fontSize: "20px" }}
-                    onClick={() => handleButtonClick(SOS_BUTTON)}
+                    onClick={() => handleButtonSOS()}
                 >
                     SOS
                 </button>
@@ -131,7 +182,7 @@ const MainContent = () => {
                 <button
                     className="btn btn-danger fw-bold"
                     style={{ width: "100px", height: "100px", fontSize: "20px" }}
-                    onClick={() => handleButtonClick(SOS_BUTTON)}
+                    onClick={() => handleButtonSOS()}
                 >
                     SOS
                 </button>

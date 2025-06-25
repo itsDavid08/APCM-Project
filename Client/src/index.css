@@ -385,7 +385,7 @@ body {
 }
 
 .custom-drawer.open {
-  right: 0;
+  left: 0;
 }
 
 .drawer-overlay {

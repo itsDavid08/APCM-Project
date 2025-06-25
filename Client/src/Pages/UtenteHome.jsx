@@ -8,14 +8,11 @@ const UtenteHome = () => {
     const [selectedUtente, setSelectedUtente] = useState(null);
 
     const handleSelectUtente = (utente) => {
-        setSelectedUtente(utente);
     };
 
-    const handleOpen = () => {
-        if (selectedUtente) {
-            setUtente(selectedUtente);
-            navigate("/main/" + selectedUtente.id);
-        }
+    const handleOpen = (utente) => {
+        setUtente(utente);
+        navigate("/main/" + utente.id);
     };
     const handleVoltar = () => {
         navigate("/");
@@ -30,7 +27,7 @@ const UtenteHome = () => {
                     <div
                         key={utente.id}
                         className={`utente-card ${selectedUtente?.id === utente.id ? 'selected' : ''}`}
-                        onClick={() => handleSelectUtente(utente)}
+                        onClick={() => handleOpen(utente)}
                     >
                         <div className={`initials-circle ${selectedUtente?.id === utente.id ? 'selected' : ''}`}>
                             {utente.nome.split(' ').map(name => name[0]).join('')}
@@ -41,13 +38,7 @@ const UtenteHome = () => {
             </div>
 
             <div className="action-sidebar">
-                <button
-                    className={`sidebar-button ${!selectedUtente ? 'disabled' : ''}`}
-                    onClick={handleOpen}
-                    disabled={!selectedUtente}
-                >
-                    Abrir
-                </button>
+
                 <button
                     className= "sidebar-button"
                     onClick={handleVoltar}

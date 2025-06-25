@@ -70,10 +70,14 @@ const pedidoController = {
     getPedidosAtivosPorUtenteId: async (req, res) => {
         try {
             const pedidos = await Pedido.findAll({
-                where: { utenteId: req.params.utenteId , estado: 'pendente' },
+                where: { utenteId: req.params.utenteId, estado: 'pendente' },
                 include: [
                     { model: Botao, as: 'botao' },
                     { model: Utente, as: 'utente' }
+                ],
+                order: [
+                    ['emergencia', 'DESC'],
+                    ['hora', 'ASC']
                 ]
             });
             res.json(pedidos);
@@ -85,6 +89,19 @@ const pedidoController = {
     // Criar um novo pedido
     criarPedido: async (req, res) => {
         try {
+            // Verifica se já existe um pedido pendente para o mesmo utente e botão
+            const pedidoExistente = await Pedido.findOne({
+                where: {
+                    utenteId: req.body.utenteId,
+                    botaoId: req.body.botaoId,
+                    estado: 'pendente'
+                }
+            });
+
+            if (pedidoExistente) {
+                return res.status(201);
+            }
+
             const pedidoCriado = await Pedido.create(req.body);
             const pedido = await Pedido.findByPk(pedidoCriado.id, {
                 include: [

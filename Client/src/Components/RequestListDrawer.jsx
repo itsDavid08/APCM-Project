@@ -23,6 +23,11 @@ const RequestListDrawer = ({ visible, onClose }) => {
         updatePedido(pedido, "concluido");
     };
 
+    // Definição da função para concluir todos os pedidos
+    const resolveTodosPedidos = () => {
+        pedidosUtilizador.forEach((pedido) => updatePedido(pedido, "concluido"));
+    };
+
     return (
         <>
             <div className={`custom-drawer ${isOpen ? "open" : ""}`}>
@@ -34,6 +39,9 @@ const RequestListDrawer = ({ visible, onClose }) => {
                         </button>
                     </div>
                     <div className="request-list">
+                        {pedidosUtilizador.length > 0 && (
+                            <button style={{marginRight: "0px", marginLeft: "auto"}} onClick={resolveTodosPedidos}> Concluir todos os pedidos</button>
+                        )}
                         {pedidosUtilizador.map((item) => (
                             <div key={item.id} className="request-item">
                                 <img
