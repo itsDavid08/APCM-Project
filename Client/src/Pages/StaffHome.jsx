@@ -82,7 +82,7 @@ const UtenteHome = () => {
                 <button className="sidebar-button" onClick={handleNew}>
                     Novo
                 </button>
-                <button className="sidebar-button" onClick={() => navigate("/editBotoes")}>
+                <button className="sidebar-button" onClick={() => navigate("/gerirBotoes")}>
                     Editar Botões
                 </button>
                 <button

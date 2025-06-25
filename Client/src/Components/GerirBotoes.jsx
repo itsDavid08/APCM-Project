@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../ContextProvider";
 
 
-const EditBotoes = () => {
+const GerirBotoes = () => {
     const navigate = useNavigate();
     const { botoes, editBotao, deleteBotao, postBotao, apiUrl } = useContext(Context);
     const [selectedBotao, setSelectedBotao] = useState(null);
@@ -326,4 +326,4 @@ const EditBotoes = () => {
     );
 };
 
-export default EditBotoes;
+export default GerirBotoes;

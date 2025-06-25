@@ -10,7 +10,7 @@ import PedidosPendentes from "./Pages/PedidosPendentes.jsx";
 import EditUtente from "./Components/EditUtente.jsx";
 import NewUtente from "./Components/NewUtente.jsx";
 
-import EditBotoes from "./Components/EditBotoes.jsx";
+import GerirBotoes from "./Components/GerirBotoes.jsx";
 import Home from "./Pages/Home.jsx";
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
                         <Route path="/new-utente" element={<NewUtente />} />
                         <Route path="/staff" element={<StaffHome />} />
                         <Route path="/staff/pedidos" element={<PedidosPendentes />} />
-                        <Route path="/editBotoes" element={<EditBotoes />} />
+                        <Route path="/gerirBotoes" element={<GerirBotoes />} />
                     </Routes>
                 </div>
 
