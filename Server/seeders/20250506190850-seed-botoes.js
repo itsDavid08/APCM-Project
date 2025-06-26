@@ -44,8 +44,8 @@ module.exports = {
             { id: 39, nome: 'Psicólogo', mensagem: 'Quero chamar um psicólogo', imagem: '/imagesBotoes/chamar/Psicologa.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
             { id: 40, nome: 'Técnico de Educação', mensagem: 'Quero chamar um técnico de educação', imagem: '/imagesBotoes/chamar/Tecnica_de_Educacao.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
             { id: 41, nome: 'Terapeuta da fala', mensagem: 'Quero chamar um terapeuta da fala', imagem: '/imagesBotoes/chamar/Terapeuta_da_Fala.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
-            { id: 42, nome: 'Coordinadora', mensagem: 'Quero chamar a coordinadora', imagem: '/imagesBotoes/chamar/coordenadora.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
-            { id: 43, nome: 'Diretora', mensagem: 'Quero chamar a diretora', imagem: '/imagesBotoes/chamar/diretora técnica.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
+            { id: 42, nome: 'Coordenadora', mensagem: 'Quero chamar a Coordinadora', imagem: '/imagesBotoes/chamar/coordenadora.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
+            { id: 43, nome: 'Diretora', mensagem: 'Quero chamar a Diretora', imagem: '/imagesBotoes/chamar/diretora técnica.png', categoria: 'Chamar', createdAt: new Date(), updatedAt: new Date() },
         ], {});
     },
 
