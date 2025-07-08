@@ -115,7 +115,7 @@ const MainContent = () => {
     );
 
     return (
-        <div className="container-fluid p-2 d-flex flex-column justify-content-center" style={{ height: "100vh" }}>
+        <div className="container-fluid p-2 d-flex flex-column justify-content-center" style={{ minHeight: "100vh" }}>
             <div className="d-flex justify-content-between align-items-center mb-2">
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
                     {utente?.pedidos?.length > 0 && (
